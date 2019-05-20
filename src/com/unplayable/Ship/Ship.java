@@ -14,7 +14,6 @@ public abstract class Ship {
 
     public void setPosition(Point2D position, Rotation rotation){
         this.position = position;
-        ShipPiece[] shipPieces = this.pieces;
         int verticalOffset = 0;
         int horizontalOffset = 0;
         switch (rotation) {
@@ -35,8 +34,8 @@ public abstract class Ship {
                 break;
             }
         }
-        for (int i = 0, shipPiecesLength = shipPieces.length; i < shipPiecesLength; i++) {
-            ShipPiece piece = shipPieces[i];
+        for (int i = 0, shipPiecesLength = this.pieces.length; i < shipPiecesLength; i++) {
+            ShipPiece piece = this.pieces[i];
             int size = piece.getImage().getHeight();
             piece.setPosition(
                 new Point2D.Double(
@@ -47,8 +46,13 @@ public abstract class Ship {
         }
     }
 
-    public Ship(String sprite){
-        //ToDo split sprite into ship pieces
+    public Ship(BufferedImage sprite) {
+        // Ship sprites are stored horizontally
+        int size = sprite.getWidth();
+        this.pieces = new ShipPiece[sprite.getHeight()/size];
+        for (int i = 0; i < pieces.length; i++) {
+            this.pieces[i] = new ShipPiece(sprite.getSubimage(i * size, 0, size, size));
+        }
     }
 
     public void draw(FXGraphics2D g) {
