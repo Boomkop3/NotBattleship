@@ -5,8 +5,8 @@ import java.awt.image.BufferedImage;
 
 public class ImageLibrary {
     public final BufferedImage SHIP_PIECE_DESTROYED_OVERLAY;
-    private ImageLibrary() throws Exception {
     private static ImageLibrary instance;
+    private ImageLibrary() throws Exception {
         // ToDo insert image from resources
         this.SHIP_PIECE_DESTROYED_OVERLAY = ImageIO.read(getClass().getResource("/Sprites/exploded.png"));
     }
