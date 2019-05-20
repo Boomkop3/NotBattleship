@@ -12,7 +12,7 @@ public class ShipPiece {
         return this.destroyed;
     }
 
-    private void draw() {
+    public void draw() {
         //ToDo draw piece, with/withouth explosion
 
         // Draw base layer
