@@ -13,6 +13,10 @@ public class ShipPiece {
     private BufferedImage image;
     private Point2D position;
 
+    public BufferedImage getImage(){
+        return this.image;
+    }
+
     public boolean isDestroyed() {
         return this.destroyed;
     }
