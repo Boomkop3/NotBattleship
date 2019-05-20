@@ -17,7 +17,7 @@ public class ShipPiece {
         return this.destroyed;
     }
 
-    public void draw(FXGraphics2D g) {
+    public void draw(FXGraphics2D g) throws Exception {
         AffineTransform at = new AffineTransform();
         g.drawImage(this.image, (int)this.position.getX(), (int)this.position.getY(), null);
         // Draw base layer
