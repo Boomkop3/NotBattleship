@@ -24,7 +24,6 @@ public class ShipPiece {
     public void draw(FXGraphics2D g) throws Exception {
         AffineTransform at = new AffineTransform();
         g.drawImage(this.image, (int)this.position.getX(), (int)this.position.getY(), null);
-        // Draw base layer
         if (this.destroyed){
             g.drawImage(
                 ImageLibrary.getInstance().SHIP_PIECE_DESTROYED_OVERLAY,
