@@ -2,13 +2,15 @@ package com.unplayable.Ship;
 
 import com.unplayable.Static.ImageLibrary;
 import javafx.scene.shape.Shape;
+import org.dyn4j.dynamics.Body;
+import org.dyn4j.geometry.Vector2;
 import org.jfree.fx.FXGraphics2D;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
-public class ShipPiece {
+public class ShipPiece extends Body {
     private boolean destroyed;
     private BufferedImage image;
     private Point2D position;
