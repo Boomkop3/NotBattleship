@@ -4,7 +4,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 
 public class ImageLibrary {
-    private final BufferedImage SHIP_PIECE_DESTROYED_OVERLAY;
+    public final BufferedImage SHIP_PIECE_DESTROYED_OVERLAY;
     private static ImageLibrary instance;
     private ImageLibrary(){
         // ToDo insert image from resources
