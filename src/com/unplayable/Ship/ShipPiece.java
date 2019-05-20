@@ -1,5 +1,10 @@
 package com.unplayable.Ship;
 
+import com.unplayable.Static.ImageLibrary;
+import javafx.scene.shape.Shape;
+import org.jfree.fx.FXGraphics2D;
+
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
@@ -8,20 +13,25 @@ public class ShipPiece {
     private BufferedImage image;
     private Point2D position;
 
+    public BufferedImage getImage(){
+        return this.image;
+    }
+
     public boolean isDestroyed() {
         return this.destroyed;
     }
 
-    public void draw() {
-        //ToDo draw piece, with/withouth explosion
-
-        // Draw base layer
+    public void draw(FXGraphics2D g) throws Exception {
+        AffineTransform at = new AffineTransform();
+        g.drawImage(this.image, (int)this.position.getX(), (int)this.position.getY(), null);
         if (this.destroyed){
-            //add explosion
+            g.drawImage(
+                ImageLibrary.getInstance().SHIP_PIECE_DESTROYED_OVERLAY,
+                (int)this.position.getX(), (int)this.position.getY(), null);
         }
     }
 
-    private void setPosition(Point2D position) {
+    public void setPosition(Point2D position) {
         this.position = position;
     }
 
