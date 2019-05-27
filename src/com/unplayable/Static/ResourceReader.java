@@ -21,10 +21,10 @@ public class ResourceReader {
         return instance;
     }
 
-    public List<String> getResourceDirectory() throws IOException {
+    public List<String> getResourceDirectory(String path) throws IOException {
         List<String> contents = new ArrayList<>();
         try {
-            InputStream in = this.getClass().getResourceAsStream("/Sprites/ships");
+            InputStream in = this.getClass().getResourceAsStream(path);
             BufferedReader buffer = new BufferedReader(new InputStreamReader(in));
 
             String resource;
