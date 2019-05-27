@@ -21,6 +21,8 @@ public class ShipPiece extends Body {
     private float width;
     private float height;
 
+        this.setAngularDamping(0.75);
+        this.setLinearDamping(0.75);
     public BufferedImage getImage(){
         return this.image;
     }
