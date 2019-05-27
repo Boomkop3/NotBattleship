@@ -1,11 +1,13 @@
 package com.unplayable.Ship;
 
+import org.jfree.fx.FXGraphics2D;
+
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
-public abstract class Ship {
+public class Ship {
     private ShipPiece[] pieces;
     private Point2D position;
 
@@ -18,7 +20,13 @@ public abstract class Ship {
         //ToDo split sprite into ship pieces
     }
 
-    public void draw(){
-        Arrays.stream(this.pieces).parallel().forEach(piece -> piece.draw());
+    public void draw(FXGraphics2D g) throws Exception {
+        Arrays.stream(this.pieces).parallel().forEach(piece -> {
+            try {
+                piece.draw(g);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 }
