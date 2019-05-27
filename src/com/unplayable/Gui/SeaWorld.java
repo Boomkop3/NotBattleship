@@ -1,21 +1,13 @@
 package com.unplayable.Gui;
 
-import com.unplayable.GlobalVariables;
+import com.unplayable.Static.GlobalVariables;
 import com.unplayable.Ship.Rotation;
 import com.unplayable.Ship.Ship;
 import com.unplayable.Ship.ShipPiece;
 import com.unplayable.Static.ResourceReader;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Parent;
-import javafx.scene.shape.Shape;
-import org.dyn4j.collision.AbstractBounds;
-import org.dyn4j.collision.Bounds;
-import org.dyn4j.collision.Collidable;
-import org.dyn4j.collision.Fixture;
-import org.dyn4j.dynamics.Body;
-import org.dyn4j.dynamics.BodyFixture;
 import org.dyn4j.dynamics.World;
-import org.dyn4j.dynamics.joint.WeldJoint;
 import org.dyn4j.geometry.*;
 import org.jfree.fx.FXGraphics2D;
 import org.jfree.fx.Resizable;
@@ -23,14 +15,9 @@ import org.jfree.fx.ResizableCanvas;
 
 import javax.imageio.ImageIO;
 import java.awt.Color;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
