@@ -12,6 +12,7 @@ import org.dyn4j.collision.Fixture;
 import org.dyn4j.dynamics.Body;
 import org.dyn4j.dynamics.BodyFixture;
 import org.dyn4j.dynamics.World;
+import org.dyn4j.dynamics.joint.WeldJoint;
 import org.dyn4j.geometry.*;
 import org.jfree.fx.FXGraphics2D;
 import org.jfree.fx.Resizable;
@@ -44,9 +45,13 @@ public class SeaWorld extends ResizableCanvas {
 
         ShipPiece piece1 = new ShipPiece(null);
         ShipPiece piece2 = new ShipPiece(null);
+        ShipPiece piece3 = new ShipPiece(null);
+        ShipPiece piece4 = new ShipPiece(null);
 
-        piece1.setPosition(275, 200);
+        piece1.setPosition(300, 265);
         piece2.setPosition(300, 300);
+        piece3.setPosition(300, 335);
+        piece4.setPosition(300, 200);
 
         this.world.addBody(
             piece1
@@ -54,14 +59,28 @@ public class SeaWorld extends ResizableCanvas {
         this.world.addBody(
             piece2
         );
+        this.world.addBody(
+            piece3
+        );
+        this.world.addBody(
+            piece4
+        );
 
         // debugging
         piece2.applyForce(
-            new Vector2(0, -1000000)
+            new Vector2(-5000, 0)
         );
         piece1.applyForce(
-            new Vector2(0, 1000000)
+            new Vector2(100000, 0)
         );
+        piece4.applyForce(
+            new Vector2(0, 100000000)
+        );
+
+        WeldJoint welding = new WeldJoint(piece1, piece2, new Vector2());
+        WeldJoint weldingz = new WeldJoint(piece2, piece3, new Vector2());
+        world.addJoint(welding);
+        world.addJoint(weldingz);
 
         FXGraphics2D graphics = new FXGraphics2D(this.getGraphicsContext2D());
 
