@@ -53,13 +53,38 @@ public class Ship {
 		}
     }
 
-    public void draw(FXGraphics2D g) throws Exception {
-        Arrays.stream(this.pieces).parallel().forEach(piece -> {
-            try {
-                piece.draw(g);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+	public int getCenterPieceIndex(){
+    	return this.pieces.length/2;
+	}
+
+    public ShipPiece getCenterPiece(){
+    	return this.pieces[this.getCenterPieceIndex()];
+	}
+
+    public void draw(FXGraphics2D g){
+    	int centerIndex = this.getCenterPieceIndex();
+    	int size = GlobalVariables.shipPieceSize;
+    	ShipPiece centerPiece = this.getCenterPiece();
+
+		AffineTransform origin = g.getTransform();
+		AffineTransform at = new AffineTransform();
+		at.translate(centerPiece.getTransform().getTranslationX(), centerPiece.getTransform().getTranslationY());
+		at.rotate(centerPiece.getTransform().getRotation());
+		g.setColor(Color.RED);
+		g.setTransform(at);
+        g.drawImage(
+        	this.sprite, -size/2, -size/2-(size*centerIndex), null
+		);
+		ShipPiece[] pieces1 = this.pieces;
+		for (int i = 0; i < pieces1.length; i++) {
+			ShipPiece piece = pieces1[i];
+			if (piece.isDestroyed() || GlobalVariables.debug) {
+				g.drawImage(
+					ImageLibrary.getInstance().SHIP_PIECE_DESTROYED_OVERLAY, -size/2, -size/2+(size*(i-centerIndex)), null
+				);
+			}
+		}
+		g.setColor(Color.BLACK);
+		g.setTransform(origin);
     }
 }
