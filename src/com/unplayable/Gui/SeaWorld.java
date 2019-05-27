@@ -111,9 +111,11 @@ public class SeaWorld extends ResizableCanvas {
             new Color(100, 149, 237)
         );
         g.clearRect(0, 0, (int)this.getWidth(), (int)this.getHeight());
-        //DebugDraw.draw(g, this.world, 1);
-        for (Body body : this.world.getBodies()){
-            ((ShipPiece)body).draw(g);
-        }
+		for (Ship ship : this.ships){
+			ship.draw(g);
+		}
+		if (GlobalVariables.debug){
+			DebugDraw.draw(g, this.world, 1);
+		}
     }
 }
