@@ -8,17 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ResourceReader {
-    private ResourceReader instance;
+    private static ResourceReader instance;
 
     private ResourceReader(){
 
     }
 
-    public ResourceReader getInstance(){
-        if (this.instance == null){
-            this.instance = new ResourceReader();
+    public static ResourceReader getInstance(){
+        if (instance == null){
+            instance = new ResourceReader();
         }
-        return this.instance;
+        return instance;
     }
 
     public List<String> getResourceDirectory() throws IOException {
