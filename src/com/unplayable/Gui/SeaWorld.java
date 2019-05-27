@@ -39,30 +39,18 @@ public class SeaWorld extends ResizableCanvas {
         this.updateRate = 1000d/60d;
         this.ships = getNewShips();
         this.world = new World();
-        /*
-        ShipPiece piece = new ShipPiece(null);
-        piece.setMass(MassType.NORMAL);
-        piece.setGravityScale(1d);
-         */
-
-        Body piece = new Body();
-
-        piece.setMass(MassType.NORMAL);
-        piece.addFixture(
-            new Ellipse(100, 100)
-        );
-        piece.setMass(
-            new Mass(new Vector2(0, 0), 1, 1)
-        );
-
         world.setGravity(new Vector2(0d, 0d));
+
+        ShipPiece piece = new ShipPiece(null);
         this.world.addBody(
             piece
         );
 
+        // debugging
         piece.applyForce(
-            new Vector2(420, 420)
+            new Vector2(1000, 1000)
         );
+        piece.applyTorque(12);
 
         FXGraphics2D graphics = new FXGraphics2D(this.getGraphicsContext2D());
 
@@ -102,13 +90,7 @@ public class SeaWorld extends ResizableCanvas {
         );
         g.clearRect(0, 0, (int)this.getWidth(), (int)this.getHeight());
         for (Body body : this.world.getBodies()){
-            g.draw(
-                new Ellipse2D.Double(
-                    body.getTransform().getTranslationX(),
-                    body.getTransform().getTranslationY(),
-                    100, 100
-                )
-            );
+            ((ShipPiece)body).draw(g);
         }
     }
 }
