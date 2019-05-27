@@ -1,5 +1,6 @@
 package com.unplayable.Ship;
 
+import com.unplayable.Gui.DebugDraw;
 import com.unplayable.Static.ImageLibrary;
 import org.dyn4j.dynamics.Body;
 import org.dyn4j.geometry.*;
@@ -25,18 +26,20 @@ public class ShipPiece extends Body {
     }
 
     public void draw(FXGraphics2D g) throws Exception {
+        AffineTransform origin = g.getTransform();
         Shape shape = new Rectangle2D.Double(
-            0, 0, this.width/2d, this.height/2d
+            -35/2d, -35/2d, this.width, this.height
         );
         AffineTransform at = new AffineTransform();
-        at.translate(
-            this.getTransform().getTranslationX(),
-            this.getTransform().getTranslationY()
-        );
+        at.translate(this.getTransform().getTranslationX(), this.getTransform().getTranslationY());
         at.rotate(this.getTransform().getRotation());
+        g.setColor(Color.RED);
+        g.setTransform(at);
         g.draw(
-            at.createTransformedShape(shape)
+            shape
         );
+        g.setColor(Color.BLACK);
+        g.setTransform(origin);
 
         /*
         AffineTransform at = new AffineTransform();
@@ -48,6 +51,14 @@ public class ShipPiece extends Body {
                 (int)this.position.getX(), (int)this.position.getY(), null);
         }
         */
+    }
+
+    public void setPosition(Point2D position){
+        this.setPosition(position.getX(), position.getY());
+    }
+
+    public void setPosition(double x, double y){
+        this.getTransform().setTranslation(x, y);
     }
 
     public ShipPiece(BufferedImage image){
@@ -62,7 +73,7 @@ public class ShipPiece extends Body {
         );
         this.setMass(MassType.NORMAL);
         this.setMass(
-            new Mass(new Vector2(this.width/2d, this.height/2d), 1, 1)
+            new Mass(new Vector2(0, 0), 1, 1)
         );
     }
 }
