@@ -33,7 +33,7 @@ public class ShipPiece extends Body {
         );
         this.setMass(MassType.NORMAL);
         this.setMass(
-            new Mass(new Vector2(0, 0), 1, 1)
+            new Mass(new Vector2(0, 0), 1, 1000)
         );
     }
 
