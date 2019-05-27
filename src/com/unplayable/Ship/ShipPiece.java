@@ -21,6 +21,10 @@ public class ShipPiece extends Body {
     private float width;
     private float height;
 
+    public BufferedImage getImage(){
+        return this.image;
+    }
+
     public boolean isDestroyed() {
         return this.destroyed;
     }
@@ -44,7 +48,6 @@ public class ShipPiece extends Body {
         /*
         AffineTransform at = new AffineTransform();
         g.drawImage(this.image, (int)this.position.getX(), (int)this.position.getY(), null);
-        // Draw base layer
         if (this.destroyed){
             g.drawImage(
                 ImageLibrary.getInstance().SHIP_PIECE_DESTROYED_OVERLAY,
