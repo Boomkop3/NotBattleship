@@ -29,9 +29,11 @@ public class SeaWorld extends ResizableCanvas {
     private World world;
     private Ship[] ships;
 
-    private Ship[] getNewShips(){
+    private Ship[] getNewShips(World world){
         Ship[] shipCollection = new Ship[10];
         // ToDo add template ship collection
+        
+
         return shipCollection;
     }
 
@@ -42,45 +44,6 @@ public class SeaWorld extends ResizableCanvas {
         this.ships = getNewShips();
         this.world = new World();
         world.setGravity(new Vector2(0d, 0d));
-
-        ShipPiece piece1 = new ShipPiece(null);
-        ShipPiece piece2 = new ShipPiece(null);
-        ShipPiece piece3 = new ShipPiece(null);
-        ShipPiece piece4 = new ShipPiece(null);
-
-        piece1.setPosition(300, 265);
-        piece2.setPosition(300, 300);
-        piece3.setPosition(300, 335);
-        piece4.setPosition(300, 200);
-
-        this.world.addBody(
-            piece1
-        );
-        this.world.addBody(
-            piece2
-        );
-        this.world.addBody(
-            piece3
-        );
-        this.world.addBody(
-            piece4
-        );
-
-        // debugging
-        piece2.applyForce(
-            new Vector2(-5000, 0)
-        );
-        piece1.applyForce(
-            new Vector2(100000, 0)
-        );
-        piece4.applyForce(
-            new Vector2(0, 100000000)
-        );
-
-        WeldJoint welding = new WeldJoint(piece1, piece2, new Vector2());
-        WeldJoint weldingz = new WeldJoint(piece2, piece3, new Vector2());
-        world.addJoint(welding);
-        world.addJoint(weldingz);
 
         FXGraphics2D graphics = new FXGraphics2D(this.getGraphicsContext2D());
 
