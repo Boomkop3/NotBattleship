@@ -45,33 +45,6 @@ public class ShipPiece extends Body {
         return this.destroyed;
     }
 
-    public void draw(FXGraphics2D g) throws Exception {
-        AffineTransform origin = g.getTransform();
-        Shape shape = new Rectangle2D.Double(
-            -35/2d, -35/2d, this.width, this.height
-        );
-        AffineTransform at = new AffineTransform();
-        at.translate(this.getTransform().getTranslationX(), this.getTransform().getTranslationY());
-        at.rotate(this.getTransform().getRotation());
-        g.setColor(Color.RED);
-        g.setTransform(at);
-        g.draw(
-            shape
-        );
-        g.setColor(Color.BLACK);
-        g.setTransform(origin);
-
-        /*
-        AffineTransform at = new AffineTransform();
-        g.drawImage(this.image, (int)this.position.getX(), (int)this.position.getY(), null);
-        if (this.destroyed){
-            g.drawImage(
-                ImageLibrary.getInstance().SHIP_PIECE_DESTROYED_OVERLAY,
-                (int)this.position.getX(), (int)this.position.getY(), null);
-        }
-        */
-    }
-
     public void setPosition(Point2D position){
         this.setPosition(position.getX(), position.getY());
     }
