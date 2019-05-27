@@ -19,6 +19,7 @@ import org.jfree.fx.ResizableCanvas;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import java.time.LocalDateTime;
 
 public class SeaWorld extends ResizableCanvas {
 
@@ -41,16 +42,26 @@ public class SeaWorld extends ResizableCanvas {
         this.world = new World();
         world.setGravity(new Vector2(0d, 0d));
 
-        ShipPiece piece = new ShipPiece(null);
+        ShipPiece piece1 = new ShipPiece(null);
+        ShipPiece piece2 = new ShipPiece(null);
+
+        piece1.setPosition(275, 200);
+        piece2.setPosition(300, 300);
+
         this.world.addBody(
-            piece
+            piece1
+        );
+        this.world.addBody(
+            piece2
         );
 
         // debugging
-        piece.applyForce(
-            new Vector2(1000, 1000)
+        piece2.applyForce(
+            new Vector2(0, -1000000)
         );
-        piece.applyTorque(12);
+        piece1.applyForce(
+            new Vector2(0, 1000000)
+        );
 
         FXGraphics2D graphics = new FXGraphics2D(this.getGraphicsContext2D());
 
@@ -89,6 +100,7 @@ public class SeaWorld extends ResizableCanvas {
             new Color(100, 149, 237)
         );
         g.clearRect(0, 0, (int)this.getWidth(), (int)this.getHeight());
+        //DebugDraw.draw(g, this.world, 1);
         for (Body body : this.world.getBodies()){
             ((ShipPiece)body).draw(g);
         }
