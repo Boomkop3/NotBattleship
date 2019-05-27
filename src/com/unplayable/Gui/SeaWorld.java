@@ -1,7 +1,9 @@
 package com.unplayable.Gui;
 
+import com.unplayable.GlobalVariables;
 import com.unplayable.Ship.Ship;
 import com.unplayable.Ship.ShipPiece;
+import com.unplayable.Static.ResourceReader;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Parent;
 import javafx.scene.shape.Shape;
@@ -18,8 +20,14 @@ import org.jfree.fx.FXGraphics2D;
 import org.jfree.fx.Resizable;
 import org.jfree.fx.ResizableCanvas;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 
 public class SeaWorld extends ResizableCanvas {
@@ -29,10 +37,18 @@ public class SeaWorld extends ResizableCanvas {
     private World world;
     private Ship[] ships;
 
-    private Ship[] getNewShips(World world){
+    private Ship[] getNewShips(World world) throws IOException {
+        int pieceSize = GlobalVariables.shipPieceSize;
         Ship[] shipCollection = new Ship[10];
-        // ToDo add template ship collection
-        
+        for (String imageFile : ResourceReader.getInstance().getResourceDirectory("/sprites/ships")){
+            BufferedImage shipImage = ImageIO.read(this.getClass().getResource(imageFile));
+            int shipPieceCount = shipImage.getHeight()/pieceSize;
+            BufferedImage[] shipPieceImages = new BufferedImage[shipPieceCount];
+            for (int i = 0; i < shipPieceCount; i++) {
+                shipPieceImages
+            }
+
+        }
 
         return shipCollection;
     }
@@ -41,8 +57,12 @@ public class SeaWorld extends ResizableCanvas {
         super(observer, parent);
         this.deltaTimePassed = 0;
         this.updateRate = 1000d/60d;
-        this.ships = getNewShips();
         this.world = new World();
+        try {
+            this.ships = getNewShips(this.world);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         world.setGravity(new Vector2(0d, 0d));
 
         FXGraphics2D graphics = new FXGraphics2D(this.getGraphicsContext2D());
