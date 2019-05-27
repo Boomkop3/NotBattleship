@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,10 +27,9 @@ public class ResourceReader {
         try {
             InputStream in = this.getClass().getResourceAsStream(path);
             BufferedReader buffer = new BufferedReader(new InputStreamReader(in));
-
             String resource;
             while ((resource = buffer.readLine()) != null) {
-                contents.add(resource);
+                contents.add(Paths.get(path, resource).toString());
             }
         } catch (Exception e){
             e.printStackTrace();
