@@ -29,7 +29,7 @@ public class ResourceReader {
             BufferedReader buffer = new BufferedReader(new InputStreamReader(in));
             String resource;
             while ((resource = buffer.readLine()) != null) {
-                contents.add(Paths.get(path, resource).toString());
+                contents.add(Paths.get(path, resource).toString().replace("\\", "/"));
             }
         } catch (Exception e){
             e.printStackTrace();

@@ -1,6 +1,7 @@
 package com.unplayable.Gui;
 
 import com.unplayable.GlobalVariables;
+import com.unplayable.Ship.Rotation;
 import com.unplayable.Ship.Ship;
 import com.unplayable.Ship.ShipPiece;
 import com.unplayable.Static.ResourceReader;
@@ -21,36 +22,38 @@ import org.jfree.fx.Resizable;
 import org.jfree.fx.ResizableCanvas;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SeaWorld extends ResizableCanvas {
 
     private double deltaTimePassed;
     private double updateRate;
     private World world;
-    private Ship[] ships;
+    private List<Ship> ships;
 
-    private Ship[] getNewShips(World world) throws IOException {
+    private List<Ship> getNewShips(World world) {
         int pieceSize = GlobalVariables.shipPieceSize;
-        Ship[] shipCollection = new Ship[10];
-        for (String imageFile : ResourceReader.getInstance().getResourceDirectory("/sprites/ships")){
-            BufferedImage shipImage = ImageIO.read(this.getClass().getResource(imageFile));
-            int shipPieceCount = shipImage.getHeight()/pieceSize;
-            BufferedImage[] shipPieceImages = new BufferedImage[shipPieceCount];
-            for (int i = 0; i < shipPieceCount; i++) {
-                shipPieceImages
-            }
-
-        }
-
-        return shipCollection;
+		List<Ship> shipCollection = new ArrayList<>();
+		try {
+			for (String imageFile : ResourceReader.getInstance().getResourceDirectory("/sprites/ships")){
+				BufferedImage sprite = ImageIO.read(this.getClass().getResource(imageFile));
+				Ship ship = new Ship(sprite, world);
+				shipCollection.add(ship);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return shipCollection;
     }
 
     public SeaWorld(Resizable observer, Parent parent) throws IllegalArgumentException {
@@ -58,11 +61,17 @@ public class SeaWorld extends ResizableCanvas {
         this.deltaTimePassed = 0;
         this.updateRate = 1000d/60d;
         this.world = new World();
-        try {
-            this.ships = getNewShips(this.world);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+		this.ships = getNewShips(this.world);
+		for (int i = 0; i < ships.size(); i++) {
+			Ship ship = ships.get(i);
+			ship.setPosition(new Point2D.Double((i+1) * 50, 200), Rotation.South);
+		}
+
+		ShipPiece bullet = new ShipPiece(null);
+		world.addBody(bullet);
+		bullet.setPosition(400, 150);
+		bullet.applyForce(new Vector2(-10000000, 0));
+
         world.setGravity(new Vector2(0d, 0d));
 
         FXGraphics2D graphics = new FXGraphics2D(this.getGraphicsContext2D());

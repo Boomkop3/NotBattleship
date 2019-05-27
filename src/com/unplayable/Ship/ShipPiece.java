@@ -21,8 +21,22 @@ public class ShipPiece extends Body {
     private float width;
     private float height;
 
+    public ShipPiece(BufferedImage image){
+        this.width = 35;
+        this.height = 35;
+        this.image = image;
+        // dyn4j
         this.setAngularDamping(0.75);
         this.setLinearDamping(0.75);
+        this.addFixture(
+            new Rectangle(this.width, this.height)
+        );
+        this.setMass(MassType.NORMAL);
+        this.setMass(
+            new Mass(new Vector2(0, 0), 1, 1)
+        );
+    }
+
     public BufferedImage getImage(){
         return this.image;
     }
@@ -64,21 +78,5 @@ public class ShipPiece extends Body {
 
     public void setPosition(double x, double y){
         this.getTransform().setTranslation(x, y);
-    }
-
-    public ShipPiece(BufferedImage image){
-        this.width = 35;
-        this.height = 35;
-        this.image = image;
-        // dyn4j
-        this.setAngularDamping(1);
-        this.setLinearDamping(1);
-        this.addFixture(
-            new Rectangle(this.width, this.height)
-        );
-        this.setMass(MassType.NORMAL);
-        this.setMass(
-            new Mass(new Vector2(0, 0), 1, 1)
-        );
     }
 }
