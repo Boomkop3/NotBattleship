@@ -69,7 +69,7 @@ public class SeaWorld extends ResizableCanvas {
 
 		ShipPiece bullet = new ShipPiece(null);
 		world.addBody(bullet);
-		bullet.setPosition(400, 150);
+		bullet.setPosition(400, 200);
 		bullet.applyForce(new Vector2(-10000000, 0));
 
         world.setGravity(new Vector2(0d, 0d));
