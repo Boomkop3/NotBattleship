@@ -53,14 +53,7 @@ public class SeaWorld extends ResizableCanvas {
 			Ship ship = ships.get(i);
 			ship.setPosition(new Point2D.Double((i+1) * 50, 200), Rotation.South);
 		}
-
-		ShipPiece bullet = new ShipPiece(null);
-		world.addBody(bullet);
-		bullet.setPosition(400, 200);
-		bullet.applyForce(new Vector2(-10000000, 0));
-
         world.setGravity(new Vector2(0d, 0d));
-
         FXGraphics2D graphics = new FXGraphics2D(this.getGraphicsContext2D());
 
         new AnimationTimer(){
