@@ -113,12 +113,15 @@ public class SeaWorld extends ResizableCanvas {
 				continue;
 			}
 			double forceRatio = 1d - (proximity / GlobalVariables.explosionDistance);
+			/* Always results in the same direction
 			double angle = location.getAngleBetween(
 				body.getTransform().getTranslation()
 			);
 			body.applyForce(
 				new Vector2(angle).multiply(forceRatio*GlobalVariables.explosionForce)
 			);
+			*/
+			
 		}
 	}
 
