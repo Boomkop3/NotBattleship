@@ -124,6 +124,17 @@ public class SeaWorld extends ResizableCanvas {
 
 	}
 
+	private Vector2 getGridCoords(int tileX, int tileY){
+    	int tileSize = GlobalVariables.shipPieceSize;
+		if (tileX > GlobalVariables.boardWidthHeight || tileY >  GlobalVariables.boardWidthHeight){
+			throw new IllegalArgumentException("Tile is not on the playing field");
+		}
+    	return new Vector2(
+    		tileSize * tileX,
+			tileSize * tileY
+		);
+	}
+
 	public void resetRenderArea(FXGraphics2D g){
 		g.setBackground(
 			new Color(100, 149, 237)
