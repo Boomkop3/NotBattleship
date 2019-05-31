@@ -57,6 +57,11 @@ public class ServerWindow extends BorderPane {
         this.player2Box.setMaxWidth(420);
         this.player2Box.getChildren().addAll(this.player2Top, this.player2World, this.player2Hits, this.player2HitsRecieved, this.player2Kills, this.player2Deaths, this.player2HitsToGo, this.player2KillsToGo);
 
+		{
+			this.player1World.createExplosion(6, 6);
+			this.player2World.createExplosion(6, 6);
+		}
+
         this.getStats = new Button("refresh stats");
 
         this.setLeft(this.player1Box);
