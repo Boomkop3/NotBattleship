@@ -106,13 +106,15 @@ public class SeaWorld extends ResizableCanvas {
 		this.lastExplosionLocation = location;
 
 		for (Body body : this.world.getBodies()){
-			double proximity = body.getTransform().getTranslation().distance(
+			Vector2 bodyLocation = body.getTransform().getTranslation();
+			double maxDistance = GlobalVariables.explosionDistance;
+			double proximity = bodyLocation.distance(
 				location
 			);
-			if (proximity > GlobalVariables.explosionDistance){
+			if (proximity > maxDistance){
 				continue;
 			}
-			double forceRatio = 1d - (proximity / GlobalVariables.explosionDistance);
+			double forceRatio = 1d - (proximity / maxDistance);
 			/* Always results in the same direction
 			double angle = location.getAngleBetween(
 				body.getTransform().getTranslation()
@@ -121,7 +123,13 @@ public class SeaWorld extends ResizableCanvas {
 				new Vector2(angle).multiply(forceRatio*GlobalVariables.explosionForce)
 			);
 			*/
-			
+			Vector2 force = new Vector2(
+				(bodyLocation.x - location.x) / maxDistance * GlobalVariables.explosionForce,
+				(bodyLocation.y - location.y) / maxDistance * GlobalVariables.explosionForce
+			);
+			body.applyForce(
+				force
+			);
 		}
 	}
 
@@ -199,6 +207,10 @@ public class SeaWorld extends ResizableCanvas {
 	}
 
     private void drawDebug(FXGraphics2D g){
+    	if (!GlobalVariables.debug){
+    		return;
+		}
+    	// Draw last Explosion
 		new FXGraphics2D(
 			this.getGraphicsContext2D()
 		).draw(
