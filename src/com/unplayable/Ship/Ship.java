@@ -67,6 +67,7 @@ public class Ship {
 
 		AffineTransform origin = g.getTransform();
 		AffineTransform at = new AffineTransform();
+		at.setTransform(origin);
 		at.translate(centerPiece.getTransform().getTranslationX(), centerPiece.getTransform().getTranslationY());
 		at.rotate(centerPiece.getTransform().getRotation());
 		g.setColor(Color.RED);

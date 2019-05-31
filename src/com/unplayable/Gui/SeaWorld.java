@@ -7,6 +7,7 @@ import com.unplayable.Ship.ShipPiece;
 import com.unplayable.Static.ResourceReader;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Parent;
+import javafx.scene.transform.Affine;
 import org.dyn4j.dynamics.World;
 import org.dyn4j.geometry.*;
 import org.jfree.fx.FXGraphics2D;
@@ -15,6 +16,7 @@ import org.jfree.fx.ResizableCanvas;
 
 import javax.imageio.ImageIO;
 import java.awt.Color;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -22,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SeaWorld extends ResizableCanvas {
-
     private double deltaTimePassed;
     private double updateRate;
     private World world;
@@ -90,7 +91,14 @@ public class SeaWorld extends ResizableCanvas {
         g.setBackground(
             new Color(100, 149, 237)
         );
-        g.clearRect(0, 0, (int)this.getWidth(), (int)this.getHeight());
+		AffineTransform viewCenter = new AffineTransform();
+		int wh = GlobalVariables.boardWidthHeight*GlobalVariables.shipPieceSize;
+		viewCenter.translate(
+			(this.getWidth()/2)-(wh/2),
+			(this.getHeight()/2)-(wh/2)
+		);
+		g.setTransform(viewCenter);
+        g.clearRect(0, 0, wh, wh);
 		for (Ship ship : this.ships){
 			ship.draw(g);
 		}
