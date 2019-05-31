@@ -124,8 +124,8 @@ public class SeaWorld extends ResizableCanvas {
 			);
 			*/
 			Vector2 force = new Vector2(
-				(bodyLocation.x - location.x) / maxDistance * GlobalVariables.explosionForce,
-				(bodyLocation.y - location.y) / maxDistance * GlobalVariables.explosionForce
+				maxDistance / (bodyLocation.x - location.x) * GlobalVariables.explosionForce,
+				maxDistance / (bodyLocation.y - location.y) * GlobalVariables.explosionForce
 			);
 			body.applyForce(
 				force
