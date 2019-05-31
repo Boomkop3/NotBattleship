@@ -92,6 +92,38 @@ public class SeaWorld extends ResizableCanvas {
     	//Todo: create explosion
 	}
 
+	public void drawGrid(FXGraphics2D g){
+		int rows = GlobalVariables.boardWidthHeight;
+		int colls = GlobalVariables.boardWidthHeight;
+		int tileSize = GlobalVariables.shipPieceSize;
+		int boardHeight = rows * tileSize;
+		int boardWidth = rows * tileSize;
+		g.setColor(
+			new Color(100/10*8, 149/10*8, 237/10*8)
+		);
+		for (int i = 0; i <= colls; i++) {
+			g.draw(
+				new Line2D.Double(
+					i * tileSize,
+					0,
+					i*tileSize,
+					boardHeight
+				)
+			);
+		}
+		for (int i = 0; i <= rows; i++) {
+			g.draw(
+				new Line2D.Double(
+					0,
+					i * tileSize,
+					boardWidth,
+					i*tileSize
+				)
+			);
+		}
+
+	}
+
 	public void resetRenderArea(FXGraphics2D g){
 		g.setBackground(
 			new Color(100, 149, 237)
