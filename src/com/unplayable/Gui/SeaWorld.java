@@ -17,6 +17,7 @@ import org.jfree.fx.ResizableCanvas;
 import javax.imageio.ImageIO;
 import java.awt.Color;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -91,10 +92,10 @@ public class SeaWorld extends ResizableCanvas {
     	//Todo: create explosion
 	}
 
-    public void draw(FXGraphics2D g) {
-        g.setBackground(
-            new Color(100, 149, 237)
-        );
+	public void resetRenderArea(FXGraphics2D g){
+		g.setBackground(
+			new Color(100, 149, 237)
+		);
 		AffineTransform viewCenter = new AffineTransform();
 		int wh = GlobalVariables.boardWidthHeight*GlobalVariables.shipPieceSize;
 		viewCenter.translate(
@@ -102,7 +103,12 @@ public class SeaWorld extends ResizableCanvas {
 			(this.getHeight()/2)-(wh/2)
 		);
 		g.setTransform(viewCenter);
-        g.clearRect(0, 0, wh, wh);
+		g.clearRect(0, 0, wh, wh);
+	}
+
+    public void draw(FXGraphics2D g) {
+    	resetRenderArea(g);
+        drawGrid(g);
 		for (Ship ship : this.ships){
 			ship.draw(g);
 		}
