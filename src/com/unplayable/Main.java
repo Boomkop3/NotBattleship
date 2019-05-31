@@ -24,7 +24,7 @@ public class Main extends Application {
         Button readyButton = getReadyWindow.getReady();
         readyButton.setOnAction(event -> {
             borderPane.setRight(
-                    new InGameWindow()
+				new InGameWindow()
             );
         });
         getReadyWindow.setReady(readyButton);
