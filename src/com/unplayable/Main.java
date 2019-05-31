@@ -33,7 +33,7 @@ public class Main extends Application {
         	seaWorld
         );
 
-		seaWorld.createExplosion(2, 6);
+		seaWorld.createExplosion(6, 7);
 
 
         borderPane.setRight(
