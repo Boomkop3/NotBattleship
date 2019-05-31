@@ -18,6 +18,7 @@ import org.jfree.fx.ResizableCanvas;
 import javax.imageio.ImageIO;
 import java.awt.Color;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
@@ -88,11 +89,22 @@ public class SeaWorld extends ResizableCanvas {
     private void update(){
         this.world.update(this.updateRate);
     }
+    private Vector2 lastExplosionLocation = new Vector2(0);
 
     public void createExplosion(int tileX, int tileY){
-    	Vector2 location = getGridCoords(
-    		tileX, tileY
-		);
+		Vector2 location;
+    	{
+			Vector2 GridCoords = getGridCoords(
+				tileX, tileY
+			);
+			location = new Vector2(
+				GridCoords.x + (GlobalVariables.shipPieceSize/2),
+				GridCoords.y + (GlobalVariables.shipPieceSize/2)
+			);
+		} // Thanks garbage collector!
+
+		this.lastExplosionLocation = location;
+
 		for (Body body : this.world.getBodies()){
 			double proximity = body.getTransform().getTranslation().distance(
 				location
@@ -153,7 +165,7 @@ public class SeaWorld extends ResizableCanvas {
 		);
 	}
 
-	public void resetRenderArea(FXGraphics2D g){
+	private void resetRenderArea(FXGraphics2D g){
 		g.setBackground(
 			new Color(100, 149, 237)
 		);
@@ -170,11 +182,28 @@ public class SeaWorld extends ResizableCanvas {
     public void draw(FXGraphics2D g) {
     	resetRenderArea(g);
         drawGrid(g);
+        drawShips(g);
+        drawDebug(g);
+    }
+
+    private void drawShips(FXGraphics2D g){
 		for (Ship ship : this.ships){
 			ship.draw(g);
 		}
 		if (GlobalVariables.debug){
 			DebugDraw.draw(g, this.world, 1);
 		}
-    }
+	}
+
+    private void drawDebug(FXGraphics2D g){
+		new FXGraphics2D(
+			this.getGraphicsContext2D()
+		).draw(
+			new Ellipse2D.Double(
+				this.lastExplosionLocation.x,
+				this.lastExplosionLocation.y,
+				5, 5
+			)
+		);
+	}
 }
