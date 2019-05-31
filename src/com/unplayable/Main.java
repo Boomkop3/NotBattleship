@@ -32,7 +32,10 @@ public class Main extends Application {
         borderPane.setCenter(
         	seaWorld
         );
-        
+
+		seaWorld.createExplosion(2, 6);
+
+
         borderPane.setRight(
 			getReadyWindow
         );
