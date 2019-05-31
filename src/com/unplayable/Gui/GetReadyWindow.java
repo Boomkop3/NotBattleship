@@ -6,12 +6,12 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
-public class Window extends BorderPane {
+public class GetReadyWindow extends BorderPane {
     private Canvas shipList;
     private Button rotate;
     private Button ready;
 
-    public Window() {
+    public GetReadyWindow() {
         this.shipList = new Canvas();
         this.rotate = new Button("rotate ship");
         this.ready = new Button("ready");

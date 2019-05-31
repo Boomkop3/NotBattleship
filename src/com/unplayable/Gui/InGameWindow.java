@@ -5,7 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
-public class WindowTwo extends BorderPane {
+public class InGameWindow extends BorderPane {
     private VBox ownStats;
     private VBox otherStats;
     private Label infoSelf;
@@ -32,7 +32,7 @@ public class WindowTwo extends BorderPane {
     private Label otherKillsToGoText;
     private Button fire;
 
-    public WindowTwo() {
+    public InGameWindow() {
         this.ownHits = 0;
         this.ownHitsRecieved = 0;
         this.ownKills = 0;

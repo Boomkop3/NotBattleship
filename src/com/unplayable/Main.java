@@ -1,9 +1,8 @@
 package com.unplayable;
 
 import com.unplayable.Gui.SeaWorld;
-import com.unplayable.Gui.Window;
-import com.unplayable.Gui.WindowTwo;
-import com.unplayable.Static.ImageLibrary;
+import com.unplayable.Gui.GetReadyWindow;
+import com.unplayable.Gui.InGameWindow;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -21,19 +20,19 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         this.borderPane = new BorderPane();
-        Window window = new Window();
-        Button readyButton = window.getReady();
+        GetReadyWindow getReadyWindow = new GetReadyWindow();
+        Button readyButton = getReadyWindow.getReady();
         readyButton.setOnAction(event -> {
             borderPane.setRight(
-                    new WindowTwo()
+                    new InGameWindow()
             );
         });
-        window.setReady(readyButton);
+        getReadyWindow.setReady(readyButton);
         borderPane.setCenter(
             new SeaWorld((g)->draw(g), borderPane)
         );
         borderPane.setRight(
-                window
+			getReadyWindow
         );
         stage.setScene(
             new Scene(
