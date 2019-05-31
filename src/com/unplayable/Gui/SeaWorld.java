@@ -8,6 +8,7 @@ import com.unplayable.Static.ResourceReader;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Parent;
 import javafx.scene.transform.Affine;
+import org.dyn4j.dynamics.Body;
 import org.dyn4j.dynamics.World;
 import org.dyn4j.geometry.*;
 import org.jfree.fx.FXGraphics2D;
@@ -89,7 +90,24 @@ public class SeaWorld extends ResizableCanvas {
     }
 
     public void createExplosion(int tileX, int tileY){
-    	//Todo: create explosion
+    	Vector2 location = getGridCoords(
+    		tileX, tileY
+		);
+		for (Body body : this.world.getBodies()){
+			double proximity = body.getTransform().getTranslation().distance(
+				location
+			);
+			if (proximity > GlobalVariables.explosionDistance){
+				continue;
+			}
+			double forceRatio = 1d - (proximity / GlobalVariables.explosionDistance);
+			double angle = location.getAngleBetween(
+				body.getTransform().getTranslation()
+			);
+			body.applyForce(
+				new Vector2(angle).multiply(forceRatio*GlobalVariables.explosionForce)
+			);
+		}
 	}
 
 	public void drawGrid(FXGraphics2D g){
