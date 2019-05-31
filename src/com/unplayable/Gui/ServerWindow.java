@@ -43,6 +43,7 @@ public class ServerWindow extends BorderPane {
         this.player1Deaths = new Label("Deaths: 0");
         this.player1HitsToGo = new Label("Hits to go: 18");
         this.player1KillsToGo = new Label("Kills to go: 6");
+        this.player1Box.setMaxWidth(420);
         this.player1Box.getChildren().addAll(this.player1Top, this.player1World, this.player1Hits, this.player1HitsRecieved, this.player1Kills, this.player1Deaths, this.player1HitsToGo, this.player1KillsToGo);
 
         this.player2Box = new VBox();
@@ -53,6 +54,7 @@ public class ServerWindow extends BorderPane {
         this.player2Deaths = new Label("Deaths: 0");
         this.player2HitsToGo = new Label("Hits to go: 18");
         this.player2KillsToGo = new Label("Kills to go: 6");
+        this.player2Box.setMaxWidth(420);
         this.player2Box.getChildren().addAll(this.player2Top, this.player2World, this.player2Hits, this.player2HitsRecieved, this.player2Kills, this.player2Deaths, this.player2HitsToGo, this.player2KillsToGo);
 
         this.getStats = new Button("refresh stats");
