@@ -7,6 +7,8 @@ import com.unplayable.Ship.ShipPiece;
 import com.unplayable.Static.ResourceReader;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Parent;
+import javafx.scene.transform.Affine;
+import org.dyn4j.dynamics.Body;
 import org.dyn4j.dynamics.World;
 import org.dyn4j.geometry.*;
 import org.jfree.fx.FXGraphics2D;
@@ -15,6 +17,9 @@ import org.jfree.fx.ResizableCanvas;
 
 import javax.imageio.ImageIO;
 import java.awt.Color;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -22,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SeaWorld extends ResizableCanvas {
-
     private double deltaTimePassed;
     private double updateRate;
     private World world;
@@ -85,17 +89,136 @@ public class SeaWorld extends ResizableCanvas {
     private void update(){
         this.world.update(this.updateRate);
     }
+    private Vector2 lastExplosionLocation = new Vector2(0);
+
+    public void createExplosion(int tileX, int tileY){
+		Vector2 location;
+    	{
+			Vector2 GridCoords = getGridCoords(
+				tileX, tileY
+			);
+			location = new Vector2(
+				GridCoords.x + (GlobalVariables.shipPieceSize/2),
+				GridCoords.y + (GlobalVariables.shipPieceSize/2)
+			);
+		} // Thanks garbage collector!
+
+		this.lastExplosionLocation = location;
+
+		for (Body body : this.world.getBodies()){
+			Vector2 bodyLocation = body.getTransform().getTranslation();
+			double maxDistance = GlobalVariables.explosionDistance;
+			double proximity = bodyLocation.distance(
+				location
+			);
+			if (proximity > maxDistance){
+				continue;
+			}
+			double forceRatio = 1d - (proximity / maxDistance);
+			/* Always results in the same direction
+			double angle = location.getAngleBetween(
+				body.getTransform().getTranslation()
+			);
+			body.applyForce(
+				new Vector2(angle).multiply(forceRatio*GlobalVariables.explosionForce)
+			);
+			*/
+			Vector2 force = new Vector2(
+				(bodyLocation.x - location.x) / maxDistance * GlobalVariables.explosionForce,
+				(bodyLocation.y - location.y) / maxDistance * GlobalVariables.explosionForce
+			);
+			body.applyForce(
+				force
+			);
+		}
+	}
+
+	public void drawGrid(FXGraphics2D g){
+		int rows = GlobalVariables.boardWidthHeight;
+		int colls = GlobalVariables.boardWidthHeight;
+		int tileSize = GlobalVariables.shipPieceSize;
+		int boardHeight = rows * tileSize;
+		int boardWidth = rows * tileSize;
+		g.setColor(
+			new Color(100/10*8, 149/10*8, 237/10*8)
+		);
+		for (int i = 0; i <= colls; i++) {
+			g.draw(
+				new Line2D.Double(
+					i * tileSize,
+					0,
+					i*tileSize,
+					boardHeight
+				)
+			);
+		}
+		for (int i = 0; i <= rows; i++) {
+			g.draw(
+				new Line2D.Double(
+					0,
+					i * tileSize,
+					boardWidth,
+					i*tileSize
+				)
+			);
+		}
+
+	}
+
+	private Vector2 getGridCoords(int tileX, int tileY){
+    	int tileSize = GlobalVariables.shipPieceSize;
+		if (tileX > GlobalVariables.boardWidthHeight || tileY >  GlobalVariables.boardWidthHeight){
+			throw new IllegalArgumentException("Tile is not on the playing field");
+		}
+    	return new Vector2(
+    		tileSize * tileX,
+			tileSize * tileY
+		);
+	}
+
+	private void resetRenderArea(FXGraphics2D g){
+		g.setBackground(
+			new Color(100, 149, 237)
+		);
+		AffineTransform viewCenter = new AffineTransform();
+		int wh = GlobalVariables.boardWidthHeight*GlobalVariables.shipPieceSize;
+		viewCenter.translate(
+			(this.getWidth()/2)-(wh/2),
+			(this.getHeight()/2)-(wh/2)
+		);
+		g.setTransform(viewCenter);
+		g.clearRect(0, 0, wh, wh);
+	}
 
     public void draw(FXGraphics2D g) {
-        g.setBackground(
-            new Color(100, 149, 237)
-        );
-        g.clearRect(0, 0, (int)this.getWidth(), (int)this.getHeight());
+    	resetRenderArea(g);
+        drawGrid(g);
+        drawShips(g);
+        drawDebug(g);
+    }
+
+    private void drawShips(FXGraphics2D g){
 		for (Ship ship : this.ships){
 			ship.draw(g);
 		}
 		if (GlobalVariables.debug){
 			DebugDraw.draw(g, this.world, 1);
 		}
-    }
+	}
+
+    private void drawDebug(FXGraphics2D g){
+    	if (!GlobalVariables.debug){
+    		return;
+		}
+    	// Draw last Explosion
+		new FXGraphics2D(
+			this.getGraphicsContext2D()
+		).draw(
+			new Ellipse2D.Double(
+				this.lastExplosionLocation.x,
+				this.lastExplosionLocation.y,
+				5, 5
+			)
+		);
+	}
 }
