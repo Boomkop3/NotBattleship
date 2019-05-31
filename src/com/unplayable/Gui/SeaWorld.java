@@ -87,6 +87,10 @@ public class SeaWorld extends ResizableCanvas {
         this.world.update(this.updateRate);
     }
 
+    public void createExplosion(int tileX, int tileY){
+    	//Todo: create explosion
+	}
+
     public void draw(FXGraphics2D g) {
         g.setBackground(
             new Color(100, 149, 237)
