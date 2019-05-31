@@ -11,7 +11,7 @@ public class ServerMain extends Application {
         launch(ServerMain.class);
     }
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         ServerWindow serverWindow = new ServerWindow();
         primaryStage.setScene(new Scene(serverWindow));
         primaryStage.show();
