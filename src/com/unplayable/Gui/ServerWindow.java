@@ -5,6 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.jfree.fx.FXGraphics2D;
 
 public class ServerWindow extends BorderPane {
 
@@ -35,24 +36,24 @@ public class ServerWindow extends BorderPane {
         this.player2Top = new Label("Player 2: ");
 
         this.player1Box = new VBox();
-        //TODO add seaworld here;
+        this.player1World = new SeaWorld((g) -> draw(g), this);
         this.player1Hits = new Label("Hits: 0");
         this.player1HitsRecieved = new Label("Hits recieved: 0");
         this.player1Kills = new Label("Kills: 0");
         this.player1Deaths = new Label("Deaths: 0");
         this.player1HitsToGo = new Label("Hits to go: 18");
         this.player1KillsToGo = new Label("Kills to go: 6");
-        this.player1Box.getChildren().addAll(this.player1Top, this.player1Hits, this.player1HitsRecieved, this.player1Kills, this.player1Deaths, this.player1HitsToGo, this.player1KillsToGo);
+        this.player1Box.getChildren().addAll(this.player1Top, this.player1World, this.player1Hits, this.player1HitsRecieved, this.player1Kills, this.player1Deaths, this.player1HitsToGo, this.player1KillsToGo);
 
         this.player2Box = new VBox();
-        //TODO add seaworld here;
+        this.player2World = new SeaWorld((g) -> draw(g), this);
         this.player2Hits = new Label("Hits: 0");
         this.player2HitsRecieved = new Label("Hits recieved: 0");
         this.player2Kills = new Label("Kills: 0");
         this.player2Deaths = new Label("Deaths: 0");
         this.player2HitsToGo = new Label("Hits to go: 18");
         this.player2KillsToGo = new Label("Kills to go: 6");
-        this.player2Box.getChildren().addAll(this.player2Top, this.player2Hits, this.player2HitsRecieved, this.player2Kills, this.player2Deaths, this.player2HitsToGo, this.player2KillsToGo);
+        this.player2Box.getChildren().addAll(this.player2Top, this.player2World, this.player2Hits, this.player2HitsRecieved, this.player2Kills, this.player2Deaths, this.player2HitsToGo, this.player2KillsToGo);
 
         this.getStats = new Button("refresh stats");
 
@@ -211,5 +212,10 @@ public class ServerWindow extends BorderPane {
 
     public void setPlayer2World(SeaWorld player2World) {
         this.player2World = player2World;
+    }
+
+
+    public void draw(FXGraphics2D g){
+
     }
 }
