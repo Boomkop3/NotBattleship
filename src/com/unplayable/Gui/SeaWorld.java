@@ -86,7 +86,7 @@ public class SeaWorld extends ResizableCanvas {
         this.world.update(this.updateRate);
     }
 
-    public void draw(FXGraphics2D g) throws Exception{
+    public void draw(FXGraphics2D g) {
         g.setBackground(
             new Color(100, 149, 237)
         );
