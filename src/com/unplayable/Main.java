@@ -13,12 +13,12 @@ import org.jfree.fx.FXGraphics2D;
 public class Main extends Application {
     private BorderPane borderPane;
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args){
         launch(Main.class);
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         this.borderPane = new BorderPane();
         GetReadyWindow getReadyWindow = new GetReadyWindow();
         Button readyButton = getReadyWindow.getReady();
