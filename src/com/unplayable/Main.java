@@ -28,9 +28,11 @@ public class Main extends Application {
             );
         });
         getReadyWindow.setReady(readyButton);
+        SeaWorld seaWorld = new SeaWorld((g)->draw(g), borderPane);
         borderPane.setCenter(
-            new SeaWorld((g)->draw(g), borderPane)
+        	seaWorld
         );
+
         borderPane.setRight(
 			getReadyWindow
         );
