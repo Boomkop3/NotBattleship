@@ -30,6 +30,11 @@ public class Connection {
 			outputStream.flush();
 	}
 
+	public Object readObject() throws IOException, ClassNotFoundException {
+		ObjectInputStream inputStream = this.getInputStream();
+		return inputStream.readObject();
+	}
+
 	public void readObjectAsync(NetworkCallback callback){
 		new Thread(()->{
 			try {

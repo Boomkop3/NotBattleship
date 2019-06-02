@@ -3,6 +3,7 @@ package com.unplayable;
 import com.unplayable.Gui.ServerWindow;
 import com.unplayable.Networking.Connection;
 import com.unplayable.Networking.ConnectionManager;
+import com.unplayable.Server.Game;
 import com.unplayable.Static.GlobalVariables;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -37,17 +38,6 @@ public class ServerMain {
     }
 
     private static void startGame(Connection player1, Connection player2) {
-        Connection[] connections = new Connection[] {player1, player2};
-        System.out.println("starting game between: ");
-        Arrays.stream(connections).parallel().forEach((connection)->{
-            System.out.println("> " + connection.getIp());
-        });
-        Arrays.stream(connections).parallel().forEach((connection)->{
-            try {
-                connection.sendObject(GlobalVariables.startGameCommand);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+        new Game(player1, player2);
     }
 }

@@ -160,7 +160,6 @@ public class SeaWorld extends ResizableCanvas {
     private void update(){
     	if (this.InGame) {
 			this.world.update(this.updateRate);
-		} else {
 		}
     }
     private Vector2 lastExplosionLocation = new Vector2(0);
