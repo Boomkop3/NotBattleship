@@ -10,10 +10,14 @@ public class ImageLibrary {
         this.SHIP_PIECE_DESTROYED_OVERLAY = ImageIO.read(getClass().getResource("/Sprites/exploded.png"));
     }
 
-    public static ImageLibrary getInstance() throws Exception {
+    public static ImageLibrary getInstance() {
         if (instance == null){
-            instance = new ImageLibrary();
-        }
+			try {
+				instance = new ImageLibrary();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
         return instance;
     }
 }
