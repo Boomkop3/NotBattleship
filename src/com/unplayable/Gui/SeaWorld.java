@@ -1,5 +1,6 @@
 package com.unplayable.Gui;
 
+import com.unplayable.Ship.ShipPiece;
 import com.unplayable.Static.GlobalVariables;
 import com.unplayable.Ship.Rotation;
 import com.unplayable.Ship.Ship;
@@ -76,17 +77,19 @@ public class SeaWorld extends ResizableCanvas {
 			Point2D mousePos = getBattleFieldMousePosition(_mousePos);
 			if (!InGame) {
 				for (Ship ship : ships) {
-					if (ship.getPosition().x < mousePos.getX()
-						&& ship.getPosition().x + 35d > mousePos.getX()
-						&& ship.getPosition().y < mousePos.getY()
-						&& ship.getPosition().y + 35 * ship.getPieces().length > mousePos.getY()) {
-						this.draggedShip = ship;
-						if (event.getButton().equals(MouseButton.SECONDARY)){
-							this.draggedShip.setRotation(
-								this.draggedShip.getRotation().rotateRight()
-							);
+					for (ShipPiece piece : ship.getPieces()) {
+						if (piece.getPosition().x < mousePos.getX()
+								&& piece.getPosition().x + 35d > mousePos.getX()
+								&& piece.getPosition().y < mousePos.getY()
+								&& piece.getPosition().y + 35d > mousePos.getY()) {
+							this.draggedShip = ship;
+							if (event.getButton().equals(MouseButton.SECONDARY)) {
+								this.draggedShip.setRotation(
+										this.draggedShip.getRotation().rotateRight()
+								);
+							}
+							this.previousPosition = new Point2D.Double(mousePos.getX(), mousePos.getY());
 						}
-						this.previousPosition = new Point2D.Double(mousePos.getX(), mousePos.getY());
 					}
 				}
 			}
