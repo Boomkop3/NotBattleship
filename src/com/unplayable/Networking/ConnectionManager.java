@@ -62,14 +62,14 @@ public class ConnectionManager {
 			while (true) {
 				try {
 					Socket newSocket = serverSocket.accept();
-					this.onConnection.stream().parallel().forEach((runnable)->{
-						runnable.run();
-					});
 					this.incomingConnections.add(
 						new Connection(
 							newSocket
 						)
 					);
+					for (Runnable callback : this.onConnection) {
+						new Thread(callback).start();
+					}
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
