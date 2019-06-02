@@ -50,7 +50,9 @@ public class ShipPiece extends Body {
     }
 
     public void setPosition(double x, double y){
-        this.getTransform().setTranslation(x, y);
+        this.getTransform().setTranslation(
+        	x + (GlobalVariables.shipPieceSize / 2),
+			y + (GlobalVariables.shipPieceSize / 2));
     }
 
     public Vector2 getPosition() {
