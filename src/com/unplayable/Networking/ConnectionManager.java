@@ -45,7 +45,7 @@ public class ConnectionManager {
 		return connection;
 	}
 
-	public void receiveObject(NetworkCallback callback){
+	public void receiveObjectAsync(NetworkCallback callback){
 		incomingConnections.stream().parallel().forEach((connection -> {
 			connection.readObjectAsync((result, adress)->{
 				callback.callback(result, adress);
