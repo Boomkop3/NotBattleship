@@ -31,6 +31,7 @@ import java.util.List;
 public class SeaWorld extends ResizableCanvas {
 	private boolean allowUserEdit;
 	private boolean allowUserAttack;
+	private boolean runSimulation;
     private double deltaTimePassed;
     private double updateRate;
 	private World world;
@@ -40,9 +41,9 @@ public class SeaWorld extends ResizableCanvas {
     private Vector2 lastExplosionLocation = new Vector2(0);
     public SeaWorld(Resizable observer, Parent parent) throws IllegalArgumentException {
         super(observer, parent);
-        this.setEvents();
         this.allowUserEdit = false;
         this.allowUserAttack = false;
+        this.runSimulation = false;
         this.deltaTimePassed = 0;
         this.updateRate = 1000d/60d;
         this.world = new World();
@@ -154,44 +155,37 @@ public class SeaWorld extends ResizableCanvas {
 	}
 
 	private void onMouseDragged(MouseEvent e){
-		if (!InGame) {
-			if (draggedShip != null) {
-				Point2D mousePos = this.getBattleFieldMousePosition(e);
-				Point2D position = new Point2D.Double(
-					this.draggedShip.getPosition().getX() + (mousePos.getX() - this.previousPosition.getX()),
-					this.draggedShip.getPosition().getY() + (mousePos.getY() - this.previousPosition.getY()));
-				this.draggedShip.setPosition(position);
-				this.previousPosition = new Point2D.Double(mousePos.getX(), mousePos.getY());
-			}
-
+		if (draggedShip != null) {
+			Point2D mousePos = this.getBattleFieldMousePosition(e);
+			Point2D position = new Point2D.Double(
+				this.draggedShip.getPosition().getX() + (mousePos.getX() - this.previousPosition.getX()),
+				this.draggedShip.getPosition().getY() + (mousePos.getY() - this.previousPosition.getY()));
+			this.draggedShip.setPosition(position);
+			this.previousPosition = new Point2D.Double(mousePos.getX(), mousePos.getY());
 		}
 	}
 
 	private void onMousePressed(MouseEvent e){
-
-		if (!InGame) {
-			Point2D mousePos = this.getBattleFieldMousePosition(e);
-			for (Ship ship : ships) {
-				for (ShipPiece piece : ship.getPieces()) {
-					if (piece.getPosition().x < mousePos.getX()
-						&& piece.getPosition().x + 35d > mousePos.getX()
-						&& piece.getPosition().y < mousePos.getY()
-						&& piece.getPosition().y + 35d > mousePos.getY()) {
-						this.draggedShip = ship;
-						if (e.getButton().equals(MouseButton.SECONDARY)) {
-							this.draggedShip.setRotation(
-								this.draggedShip.getRotation().rotateRight()
-							);
-						}
-						this.previousPosition = new Point2D.Double(mousePos.getX(), mousePos.getY());
+		Point2D mousePos = this.getBattleFieldMousePosition(e);
+		for (Ship ship : ships) {
+			for (ShipPiece piece : ship.getPieces()) {
+				if (piece.getPosition().x < mousePos.getX()
+					&& piece.getPosition().x + 35d > mousePos.getX()
+					&& piece.getPosition().y < mousePos.getY()
+					&& piece.getPosition().y + 35d > mousePos.getY()) {
+					this.draggedShip = ship;
+					if (e.getButton().equals(MouseButton.SECONDARY)) {
+						this.draggedShip.setRotation(
+							this.draggedShip.getRotation().rotateRight()
+						);
 					}
+					this.previousPosition = new Point2D.Double(mousePos.getX(), mousePos.getY());
 				}
 			}
 		}
 	}
 
 	private void onMouseReleased(MouseEvent e){
-		if (InGame) return;
 		Point2D mousePos = this.getBattleFieldMousePosition(e);
 		mousePos = new Point2D.Double(
 			((int)mousePos.getX()/35)*35,
@@ -203,11 +197,6 @@ public class SeaWorld extends ResizableCanvas {
 		this.draggedShip = null;
 	}
 
-	private void setEvents(){
-		this.setOnMousePressed(this::onMousePressed);
-		this.setOnMouseDragged(this::onMouseDragged);
-		this.setOnMouseReleased(this::onMouseReleased);
-	}
 
     public void update(double deltaTimeMillis){
         this.deltaTimePassed += deltaTimeMillis;
@@ -217,8 +206,16 @@ public class SeaWorld extends ResizableCanvas {
         }
     }
 
-    private void update(){
-    	if (this.InGame) {
+	public boolean isRunSimulation() {
+		return runSimulation;
+	}
+
+	public void setRunSimulation(boolean runSimulation) {
+		this.runSimulation = runSimulation;
+	}
+
+	private void update(){
+    	if (this.runSimulation) {
 			this.world.update(this.updateRate);
 		}
     }
