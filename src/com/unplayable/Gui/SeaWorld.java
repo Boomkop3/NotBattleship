@@ -29,19 +29,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SeaWorld extends ResizableCanvas {
-	private boolean InGame;
+	private boolean allowUserEdit;
+	private boolean allowUserAttack;
     private double deltaTimePassed;
     private double updateRate;
-    private World world;
+	private World world;
     private List<Ship> ships;
     private Ship draggedShip = null;
     private Point2D previousPosition;
     private Vector2 lastExplosionLocation = new Vector2(0);
-
     public SeaWorld(Resizable observer, Parent parent) throws IllegalArgumentException {
         super(observer, parent);
         this.setEvents();
-        this.InGame = false;
+        this.allowUserEdit = false;
+        this.allowUserAttack = false;
         this.deltaTimePassed = 0;
         this.updateRate = 1000d/60d;
         this.world = new World();
@@ -71,6 +72,22 @@ public class SeaWorld extends ResizableCanvas {
             }
         }.start();
     }
+
+	public boolean isAllowUserEdit() {
+		return allowUserEdit;
+	}
+
+	public void setAllowUserEdit(boolean allowUserEdit) {
+		this.allowUserEdit = allowUserEdit;
+	}
+
+	public boolean isAllowUserAttack() {
+		return allowUserAttack;
+	}
+
+	public void setAllowUserAttack(boolean allowUserAttack) {
+		this.allowUserAttack = allowUserAttack;
+	}
 
     private void addWall(boolean vertical, int x, int y){
 		Body body = new Body();
@@ -331,13 +348,5 @@ public class SeaWorld extends ResizableCanvas {
 				5, 5
 			)
 		);
-	}
-
-	public boolean isInGame() {
-		return InGame;
-	}
-
-	public void setInGame(boolean inGame) {
-		InGame = inGame;
 	}
 }
