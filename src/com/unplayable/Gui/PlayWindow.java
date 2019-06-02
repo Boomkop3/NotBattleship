@@ -1,6 +1,7 @@
 package com.unplayable.Gui;
 
 import com.unplayable.Networking.Connection;
+import com.unplayable.Static.GlobalVariables;
 import com.unplayable.Static.ResourceReader;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
@@ -37,6 +38,11 @@ public class PlayWindow extends BorderPane {
         Button readyButton = getReadyWindow.getReady();
         SeaWorld world = new SeaWorld((g)->draw(g), this);
         readyButton.setOnAction(event -> {
+            try {
+                this.connection.sendObject(GlobalVariables.ImReadyCommand);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             world.setInGame(true);
             this.setRight(new InGameWindow());
         });
