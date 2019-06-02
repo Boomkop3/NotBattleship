@@ -12,6 +12,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.Vector;
 
 public class ShipPiece extends Body {
     private boolean destroyed;

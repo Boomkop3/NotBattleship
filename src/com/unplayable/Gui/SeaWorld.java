@@ -76,10 +76,10 @@ public class SeaWorld extends ResizableCanvas {
 			Point2D mousePos = getBattleFieldMousePosition(_mousePos);
 			if (!InGame) {
 				for (Ship ship : ships) {
-					if (ship.getPosition().x < mousePos.getX()
-						&& ship.getPosition().x + 35d > mousePos.getX()
-						&& ship.getPosition().y < mousePos.getY()
-						&& ship.getPosition().y + 35 * ship.getPieces().length > mousePos.getY()) {
+					if (ship.getPosition().getX() < mousePos.getX()
+						&& ship.getPosition().getX() + 35d > mousePos.getX()
+						&& ship.getPosition().getY() < mousePos.getY()
+						&& ship.getPosition().getY() + 35 * ship.getPieces().length > mousePos.getY()) {
 						this.draggedShip = ship;
 						if (event.getButton().equals(MouseButton.SECONDARY)){
 							this.draggedShip.setRotation(
@@ -97,8 +97,8 @@ public class SeaWorld extends ResizableCanvas {
 					Point2D _mousePos = new Point2D.Double(event.getX(), event.getY());
 					Point2D mousePos = getBattleFieldMousePosition(_mousePos);
 					Point2D position = new Point2D.Double(
-							this.draggedShip.getPosition().x + (mousePos.getX() - this.previousPosition.getX()),
-							this.draggedShip.getPosition().y + (mousePos.getY() - this.previousPosition.getY()));
+							this.draggedShip.getPosition().getX() + (mousePos.getX() - this.previousPosition.getX()),
+							this.draggedShip.getPosition().getY() + (mousePos.getY() - this.previousPosition.getY()));
         			this.draggedShip.setPosition(position);
 					this.previousPosition = new Point2D.Double(mousePos.getX(), mousePos.getY());
 				}
