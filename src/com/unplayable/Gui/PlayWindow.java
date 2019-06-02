@@ -35,12 +35,14 @@ public class PlayWindow extends BorderPane {
         this.connection = connection;
         GetReadyWindow getReadyWindow = new GetReadyWindow();
         Button readyButton = getReadyWindow.getReady();
+        SeaWorld world = new SeaWorld((g)->draw(g), this);
         readyButton.setOnAction(event -> {
+            world.setInGame(true);
             this.setRight(new InGameWindow());
         });
         getReadyWindow.setReady(readyButton);
         this.setCenter(
-                new SeaWorld((g)->draw(g), this)
+                world
         );
         this.setRight(getReadyWindow);
     }
