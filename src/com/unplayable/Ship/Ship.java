@@ -42,8 +42,8 @@ public class Ship {
             int size = piece.getImage().getHeight();
             piece.setPosition(
                 new Point2D.Double(
-                    (int)position.getX() + (i * rotation.offset.getX() * size),
-                    (int)position.getY() + (i * rotation.offset.getY() * size)
+                    position.getX() + (i * rotation.offset.getX() * size),
+                    position.getY() + (i * rotation.offset.getY() * size)
                 )
             );
             piece.getTransform().setRotation(this.rotation.getTheta());
