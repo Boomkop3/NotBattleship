@@ -1,21 +1,17 @@
 package com.unplayable;
 
-import com.unplayable.Gui.*;
+import com.unplayable.Gui.ConnectionWindow;
+import com.unplayable.Gui.PlayWindow;
 import com.unplayable.Networking.Connection;
 import com.unplayable.Networking.ConnectionManager;
 import com.unplayable.Static.GlobalVariables;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import org.jfree.fx.FXGraphics2D;
 
 import java.io.IOException;
-import java.net.Socket;
 
 public class Main extends Application {
 	ConnectionWindow connectionWindow;
@@ -45,6 +41,13 @@ public class Main extends Application {
     }
 
     private void startGame(String serverIP, Stage stage) throws IOException {
+
+		stage.setScene(
+			new Scene(
+				new PlayWindow(new Connection(null))
+			)
+		);
+
 		this.connectionWindow.getBottomLabel().setText("Starting game on server: " + serverIP);
     	ConnectionManager manager = ConnectionManager.getInstance();
     	Connection serverConnection = manager.createConnection(serverIP);
