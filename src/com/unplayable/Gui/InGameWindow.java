@@ -32,6 +32,23 @@ public class InGameWindow extends BorderPane {
     private Label otherKillsToGoText;
     private Button fire;
 
+    public Score getScore(){
+        return new Score(
+            this.ownHits,
+            this.ownHitsRecieved,
+            this.ownKills,
+            this.ownDeaths,
+            this.ownHitsToGo,
+            this.otherHitsToGo,
+            this.ownKillsToGo,
+            this.otherKillsToGo
+        );
+    }
+
+    public void setScore(Score score){
+
+    }
+
     public InGameWindow() {
         this.ownHits = 0;
         this.ownHitsRecieved = 0;
