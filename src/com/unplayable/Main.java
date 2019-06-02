@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 
 import java.io.IOException;
+import java.net.Socket;
 
 public class Main extends Application {
 
