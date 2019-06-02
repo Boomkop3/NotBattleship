@@ -14,6 +14,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 
+import java.io.IOException;
+
 public class Main extends Application {
     private BorderPane borderPane;
 
@@ -32,11 +34,18 @@ public class Main extends Application {
 		((Button)connectionWindow.getRight()).setOnAction((e)->{
 			String serverIp = ((TextField)connectionWindow.getCenter()).getText();
 			stage.hide();
-			this.startGame(serverIp);
+			try {
+				this.startGame(serverIp, stage);
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
 		});
     }
 
-    private void startGame(String serverIP){
+    private void startGame(String serverIP, Stage stage) throws IOException {
     	System.out.println("Starting game on server: " + serverIP);
+    	ConnectionManager manager = ConnectionManager.getInstance();
+    	manager.createConnection(serverIP);
+    	stage.show();
 	}
 }
