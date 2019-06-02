@@ -1,5 +1,6 @@
 package com.unplayable;
 
+import com.unplayable.Gui.ConnectionWindow;
 import com.unplayable.Gui.SeaWorld;
 import com.unplayable.Gui.GetReadyWindow;
 import com.unplayable.Gui.InGameWindow;
@@ -19,72 +20,23 @@ public class Main extends Application {
     public static void main(String[] args){
         launch(Main.class);
     }
-	int eventsRecieved = 0;
     @Override
     public void start(Stage stage) throws Exception {
-        //BorderPane borderPane = new BorderPane();
-
-		ConnectionManager.getInstance();
-		this.borderPane = new BorderPane();
-		new Thread(()->{
-			try {
-
-
-				ConnectionManager.getInstance().receiveObject(
-					(result, adress)->{
-						System.out.println((String)result);
-						System.out.println("from: " + adress);
-					}
-				);
-
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}).start();
-
-		new Thread(()->{
-			try {
-
-
-				while (true){
-					ConnectionManager connectionManager = ConnectionManager.getInstance();
-					Connection connection = connectionManager.createConnection("127.0.0.1");
-					connection.sendObject("get fkn rekt m8");
-				}
-
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}).start();
-		borderPane.setCenter(
-			new TextField()
+		ConnectionWindow connectionWindow = new ConnectionWindow();
+    	stage.setScene(
+    		new Scene(
+    			connectionWindow
+			)
 		);
-		borderPane.setRight(
-			new Button("send message")
-		);
-
-        stage.setScene(
-            new Scene(
-                borderPane
-            )
-        );
-        stage.show();
+    	stage.show();
+		((Button)connectionWindow.getRight()).setOnAction((e)->{
+			String serverIp = ((TextField)connectionWindow.getCenter()).getText();
+			stage.hide();
+			this.startGame(serverIp);
+		});
     }
 
-    private void inputReceived(Object object){
-    	eventsRecieved++;
-    	String wtvr = (String)object;
-    	System.out.println(wtvr);
-    	System.out.println("recieved " + eventsRecieved);
+    private void startGame(String serverIP){
+    	System.out.println("Starting game on server: " + serverIP);
 	}
-
-    public void draw(FXGraphics2D g){
-
-    }
-
-    public void update(){
-
-    }
 }
