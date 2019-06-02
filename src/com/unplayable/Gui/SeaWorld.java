@@ -36,6 +36,40 @@ public class SeaWorld extends ResizableCanvas {
     private List<Ship> ships;
     private Ship draggedShip = null;
     private Point2D previousPosition;
+    private Vector2 lastExplosionLocation = new Vector2(0);
+
+    public SeaWorld(Resizable observer, Parent parent) throws IllegalArgumentException {
+        super(observer, parent);
+        this.setEvents();
+        this.InGame = false;
+        this.deltaTimePassed = 0;
+        this.updateRate = 1000d/60d;
+        this.world = new World();
+		this.ships = getNewShips(this.world);
+		for (int i = 0; i < ships.size(); i++) {
+			Ship ship = ships.get(i);
+			ship.setPosition(new Point2D.Double((i+1) * 50, 200));
+		}
+        world.setGravity(new Vector2(0d, 0d));
+        FXGraphics2D graphics = new FXGraphics2D(this.getGraphicsContext2D());
+
+        new AnimationTimer(){
+            long last = -1;
+            @Override
+            public void handle(long now) {
+                if (last == -1) {
+                    last = now;
+                }
+                update((now - last) / 1000000.0d);
+                last = now;
+                try {
+                    draw(graphics);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
 
     private List<Ship> getNewShips(World world) {
 		List<Ship> shipCollection = new ArrayList<>();
@@ -131,39 +165,6 @@ public class SeaWorld extends ResizableCanvas {
 		this.setOnMouseReleased(this::onMouseReleased);
 	}
 
-    public SeaWorld(Resizable observer, Parent parent) throws IllegalArgumentException {
-        super(observer, parent);
-        this.setEvents();
-        this.InGame = false;
-        this.deltaTimePassed = 0;
-        this.updateRate = 1000d/60d;
-        this.world = new World();
-		this.ships = getNewShips(this.world);
-		for (int i = 0; i < ships.size(); i++) {
-			Ship ship = ships.get(i);
-			ship.setPosition(new Point2D.Double((i+1) * 50, 200));
-		}
-        world.setGravity(new Vector2(0d, 0d));
-        FXGraphics2D graphics = new FXGraphics2D(this.getGraphicsContext2D());
-
-        new AnimationTimer(){
-            long last = -1;
-            @Override
-            public void handle(long now) {
-                if (last == -1) {
-                    last = now;
-                }
-                update((now - last) / 1000000.0d);
-                last = now;
-                try {
-                    draw(graphics);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }.start();
-    }
-
     public void update(double deltaTimeMillis){
         this.deltaTimePassed += deltaTimeMillis;
         if (deltaTimePassed > updateRate){
@@ -177,7 +178,6 @@ public class SeaWorld extends ResizableCanvas {
 			this.world.update(this.updateRate);
 		}
     }
-    private Vector2 lastExplosionLocation = new Vector2(0);
 
     public void createExplosion(int tileX, int tileY){
 		Vector2 location;
