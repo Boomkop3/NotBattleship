@@ -27,10 +27,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SeaWorld extends ResizableCanvas {
+	private boolean InGame;
     private double deltaTimePassed;
     private double updateRate;
     private World world;
     private List<Ship> ships;
+    private Ship dragged = null;
+    private Point2D previousPosition;
 
     private List<Ship> getNewShips(World world) {
         int pieceSize = GlobalVariables.shipPieceSize;
@@ -47,8 +50,62 @@ public class SeaWorld extends ResizableCanvas {
 		return shipCollection;
     }
 
+    private Point2D getBattleFieldMousePosition(Point2D point){
+    	double battlefieldSize = GlobalVariables.shipPieceSize * GlobalVariables.boardWidthHeight;
+    	double offsetX = (this.getWidth() - battlefieldSize)/2;
+    	double offsetY = (this.getHeight() - battlefieldSize)/2;
+    	return new Point2D.Double(
+				point.getX() - offsetX,
+				point.getY() - offsetY
+		);
+	}
+
+	private Vector2 getTile(Point2D coordinate){
+    	return new Vector2(
+			(int)coordinate.getX() / GlobalVariables.shipPieceSize,
+			(int)coordinate.getY() / GlobalVariables.shipPieceSize
+		);
+	}
+
     public SeaWorld(Resizable observer, Parent parent) throws IllegalArgumentException {
         super(observer, parent);
+        this.setOnMousePressed((event -> {
+        	Point2D _mousePos = new Point2D.Double(event.getX(), event.getY());
+        	Point2D mousePos = getBattleFieldMousePosition(_mousePos);
+			createExplosion((int)mousePos.getX()/GlobalVariables.shipPieceSize, (int)mousePos.getY()/GlobalVariables.shipPieceSize);
+        	if (!InGame) {
+				System.out.println("X: " + mousePos.getX() + " Y: " + mousePos.getY());
+				for (Ship ship : ships) {
+					if (ship.getPosition().x < mousePos.getX() && ship.getPosition().x + 35d > mousePos.getX() && ship.getPosition().y < mousePos.getY() && ship.getPosition().y + 35 * ship.getPieces().length > mousePos.getY()) {
+						System.out.println("ship selected");
+						this.dragged = ship;
+						System.out.println("XShip: " + this.dragged.getPosition().x + " YShip: " + this.dragged.getPosition().y);
+						this.previousPosition = new Point2D.Double(mousePos.getX(), mousePos.getY());
+					}
+				}
+			}
+				})
+		);
+        this.setOnMouseDragged(event -> {
+        	if (!InGame) {
+        		if (dragged != null) {
+					Point2D _mousePos = new Point2D.Double(event.getX(), event.getY());
+					Point2D mousePos = getBattleFieldMousePosition(_mousePos);
+					Point2D position = new Point2D.Double(
+							this.dragged.getPosition().x + (mousePos.getX() - this.previousPosition.getX()),
+							this.dragged.getPosition().y + (mousePos.getY() - this.previousPosition.getY()));
+        			this.dragged.setPosition(position, this.dragged.getRotation());
+					this.previousPosition = new Point2D.Double(mousePos.getX(), mousePos.getY());
+				}
+
+        	}
+		});
+        this.setOnMouseReleased(event -> {
+        	if (!InGame) {
+        		this.dragged = null;
+			}
+		});
+        this.InGame = false;
         this.deltaTimePassed = 0;
         this.updateRate = 1000d/60d;
         this.world = new World();
@@ -87,7 +144,10 @@ public class SeaWorld extends ResizableCanvas {
     }
 
     private void update(){
-        this.world.update(this.updateRate);
+    	if (this.InGame) {
+			this.world.update(this.updateRate);
+		} else {
+		}
     }
     private Vector2 lastExplosionLocation = new Vector2(0);
 
@@ -165,6 +225,10 @@ public class SeaWorld extends ResizableCanvas {
 
 	}
 
+	private Vector2 getGridCoords(Vector2 point){
+    	return getGridCoords((int)point.x, (int)point.x);
+	}
+
 	private Vector2 getGridCoords(int tileX, int tileY){
     	int tileSize = GlobalVariables.shipPieceSize;
 		if (tileX > GlobalVariables.boardWidthHeight || tileY >  GlobalVariables.boardWidthHeight){
@@ -220,5 +284,13 @@ public class SeaWorld extends ResizableCanvas {
 				5, 5
 			)
 		);
+	}
+
+	public boolean isInGame() {
+		return InGame;
+	}
+
+	public void setInGame(boolean inGame) {
+		InGame = inGame;
 	}
 }

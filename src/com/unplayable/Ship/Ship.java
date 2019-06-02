@@ -15,12 +15,22 @@ import java.awt.image.BufferedImage;
 public class Ship {
     private ShipPiece[] pieces;
     private BufferedImage sprite;
+    private Rotation rotation;
 
-    public void setPosition(int x, int y, Rotation rotation){
+	public ShipPiece[] getPieces() {
+		return pieces;
+	}
+
+	public void setPosition(int x, int y, Rotation rotation){
     	this.setPosition(new Point2D.Double(x, y), rotation);
 	}
 
     public void setPosition(Point2D position, Rotation rotation){
+		this.rotation = rotation;
+		position = new Point2D.Double(
+			position.getX() + (GlobalVariables.shipPieceSize/2),
+			position.getY() + (GlobalVariables.shipPieceSize/2)
+		);
         for (int i = 0, shipPiecesLength = this.pieces.length; i < shipPiecesLength; i++) {
             ShipPiece piece = this.pieces[i];
             int size = piece.getImage().getHeight();
@@ -32,6 +42,14 @@ public class Ship {
             );
         }
     }
+
+	public Vector2 getPosition(){
+		Vector2 position = this.pieces[0].getTransform().getTranslation();
+		return new Vector2(
+			position.x - (GlobalVariables.shipPieceSize/2),
+			position.y - (GlobalVariables.shipPieceSize/2)
+		);
+	}
 
     public Ship(BufferedImage sprite, World world) {
         // Ship sprites are stored horizontally
@@ -86,4 +104,8 @@ public class Ship {
 		g.setColor(Color.BLACK);
 		g.setTransform(origin);
     }
+
+	public Rotation getRotation() {
+		return rotation;
+	}
 }
