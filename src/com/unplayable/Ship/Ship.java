@@ -33,6 +33,10 @@ public class Ship {
         }
     }
 
+    public Vector2 getPosition(){
+    	return this.pieces[0].getTransform().getTranslation();
+	}
+
     public Ship(BufferedImage sprite, World world) {
         // Ship sprites are stored horizontally
 		this.sprite = sprite;
