@@ -53,10 +53,9 @@ public class Ship {
     }
 
 	public Point2D getPosition(){
-		Vector2 position = this.pieces[0].getTransform().getTranslation();
 		return new Point2D.Double(
-			position.x - (GlobalVariables.shipPieceSize/2),
-			position.y - (GlobalVariables.shipPieceSize/2)
+			this.pieces[0].getPosition().x,
+			this.pieces[0].getPosition().y
 		);
 	}
 
@@ -79,6 +78,7 @@ public class Ship {
 		}
     }
 
+    /*
 	public int getCenterPieceIndex(){
     	return this.pieces.length/2;
 	}
@@ -86,9 +86,9 @@ public class Ship {
     public ShipPiece getCenterPiece(){
     	return this.pieces[this.getCenterPieceIndex()];
 	}
-
+	*/
     public void draw(FXGraphics2D g){
-    	int centerIndex = this.getCenterPieceIndex();
+    	//int centerIndex = this.getCenterPieceIndex();
     	int size = GlobalVariables.shipPieceSize;
     	//ShipPiece centerPiece = this.getCenterPiece();
 		ShipPiece firstPiece = this.pieces[0];
