@@ -14,7 +14,6 @@ import java.awt.image.BufferedImage;
 
 public class Ship {
     private ShipPiece[] pieces;
-    private double rotation;
     private BufferedImage sprite;
 
     public void setPosition(int x, int y, Rotation rotation){
