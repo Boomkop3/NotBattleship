@@ -1,9 +1,6 @@
 package com.unplayable;
 
-import com.unplayable.Gui.ConnectionWindow;
-import com.unplayable.Gui.SeaWorld;
-import com.unplayable.Gui.GetReadyWindow;
-import com.unplayable.Gui.InGameWindow;
+import com.unplayable.Gui.*;
 import com.unplayable.Networking.Connection;
 import com.unplayable.Networking.ConnectionManager;
 import javafx.application.Application;
@@ -32,6 +29,12 @@ public class Main extends Application {
 		((Button)connectionWindow.getRight()).setOnAction((e)->{
 			String serverIp = ((TextField)connectionWindow.getCenter()).getText();
 			stage.hide();
+			stage.setScene(
+					new Scene(
+							new PlayWindow(null)
+					)
+			);
+			stage.show();
 			this.startGame(serverIp);
 		});
     }
