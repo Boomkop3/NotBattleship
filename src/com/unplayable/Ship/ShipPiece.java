@@ -1,5 +1,6 @@
 package com.unplayable.Ship;
 
+import com.unplayable.Static.GlobalVariables;
 import com.unplayable.Static.ImageLibrary;
 import org.dyn4j.dynamics.Body;
 import org.dyn4j.geometry.*;
@@ -12,6 +13,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.Vector;
 
 public class ShipPiece extends Body {
     private boolean destroyed;
@@ -49,5 +51,13 @@ public class ShipPiece extends Body {
 
     public void setPosition(double x, double y){
         this.getTransform().setTranslation(x, y);
+    }
+
+    public Vector2 getPosition() {
+        Vector2 position = this.getTransform().getTranslation();
+        return new Vector2(
+                position.x - (GlobalVariables.shipPieceSize / 2),
+                position.y - (GlobalVariables.shipPieceSize / 2)
+        );
     }
 }
