@@ -1,5 +1,7 @@
 package com.unplayable.Networking;
 
+import javax.xml.crypto.Data;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -50,6 +52,23 @@ public class Connection {
 				e.printStackTrace();
 			}
 		}).start();
+	}
+
+	private DataOutputStream dataOutputStream;
+
+	private DataOutputStream getDataOutputStream() throws IOException {
+		if (this.dataOutputStream == null){
+			this.dataOutputStream = new DataOutputStream(
+				this.socket.getOutputStream()
+			);
+		}
+		return this.dataOutputStream;
+	}
+
+	public void writeString(String text) throws IOException {
+		this.getDataOutputStream().writeUTF(
+			text
+		);
 	}
 
 	public String getAdress(){
