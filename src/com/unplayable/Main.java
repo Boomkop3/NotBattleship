@@ -56,7 +56,13 @@ public class Main extends Application {
 				if (data.equals(GlobalVariables.startGameCommand)){
 					Platform.runLater(()->{
 						this.connectionWindow.getBottomLabel().setText("Starting game...");
-						// ToDo: start game
+						stage.hide();
+						stage.setScene(
+							new Scene(
+								new PlayWindow(serverConnection)
+							)
+						);
+						stage.show();
 					});
 				}
 			}
