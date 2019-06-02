@@ -51,6 +51,10 @@ public class SeaWorld extends ResizableCanvas {
 		return shipCollection;
     }
 
+	private Point2D getBattleFieldMousePosition(MouseEvent e){
+		return getBattleFieldMousePosition(new Point2D.Double(e.getX(), e.getY()));
+	}
+
     private Point2D getBattleFieldMousePosition(double x, double y){
     	return getBattleFieldMousePosition(new Point2D.Double(x, y));
 	}
@@ -75,8 +79,7 @@ public class SeaWorld extends ResizableCanvas {
 	private void onMouseDragged(MouseEvent e){
 		if (!InGame) {
 			if (draggedShip != null) {
-				Point2D _mousePos = new Point2D.Double(e.getX(), e.getY());
-				Point2D mousePos = getBattleFieldMousePosition(_mousePos);
+				Point2D mousePos = this.getBattleFieldMousePosition(e);
 				Point2D position = new Point2D.Double(
 					this.draggedShip.getPosition().getX() + (mousePos.getX() - this.previousPosition.getX()),
 					this.draggedShip.getPosition().getY() + (mousePos.getY() - this.previousPosition.getY()));
@@ -88,9 +91,9 @@ public class SeaWorld extends ResizableCanvas {
 	}
 
 	private void onMousePressed(MouseEvent e){
-		Point2D _mousePos = new Point2D.Double(e.getX(), e.getY());
-		Point2D mousePos = getBattleFieldMousePosition(_mousePos);
+
 		if (!InGame) {
+			Point2D mousePos = this.getBattleFieldMousePosition(e);
 			for (Ship ship : ships) {
 				for (ShipPiece piece : ship.getPieces()) {
 					if (piece.getPosition().x < mousePos.getX()
@@ -112,7 +115,7 @@ public class SeaWorld extends ResizableCanvas {
 
 	private void onMouseReleased(MouseEvent e){
 		if (InGame) return;
-		Point2D mousePos = getBattleFieldMousePosition(e.getX(), e.getY());
+		Point2D mousePos = this.getBattleFieldMousePosition(e);
 		mousePos = new Point2D.Double(
 			((int)mousePos.getX()/35)*35,
 			((int)mousePos.getY()/35)*35
