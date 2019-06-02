@@ -21,6 +21,38 @@ public class Score {
         this.otherKillsToGo = otherKillsToGo;
     }
 
+    public int getHits() {
+        return hits;
+    }
+
+    public int getHitsRecieved() {
+        return hitsRecieved;
+    }
+
+    public int getKills() {
+        return kills;
+    }
+
+    public int getDeaths() {
+        return deaths;
+    }
+
+    public int getOwnHitsToGo() {
+        return ownHitsToGo;
+    }
+
+    public int getOtherHitsToGo() {
+        return otherHitsToGo;
+    }
+
+    public int getOwnKillsToGo() {
+        return ownKillsToGo;
+    }
+
+    public int getOtherKillsToGo() {
+        return otherKillsToGo;
+    }
+
     public Score getEnemyScore(){
         return new Score(
             this.hitsRecieved,
