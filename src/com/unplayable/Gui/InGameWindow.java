@@ -46,7 +46,15 @@ public class InGameWindow extends BorderPane {
     }
 
     public void setScore(Score score){
-
+        this.ownHits = score.getHits();
+        this.ownHitsRecieved = score.getHitsRecieved();
+        this.ownKills = score.getKills();
+        this.ownDeaths = score.getDeaths();
+        this.ownHitsToGo = score.getOwnHitsToGo();
+        this.ownKillsToGo = score.getOwnKillsToGo();
+        this.otherHitsToGo = score.getOtherHitsToGo();
+        this.otherKillsToGo = score.getOtherKillsToGo();
+        this.updateInterface();
     }
 
     private void updateInterface(){
@@ -75,6 +83,7 @@ public class InGameWindow extends BorderPane {
         this.ownKillsToGo = 6;
         this.otherHitsToGo = 18;
         this.otherKillsToGo = 6;
+        this.updateInterface();
 
         this.ownStats = new VBox();
         this.otherStats = new VBox();
