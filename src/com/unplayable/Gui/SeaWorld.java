@@ -79,6 +79,16 @@ public class SeaWorld extends ResizableCanvas {
 	}
 
 	public void setAllowUserEdit(boolean allowUserEdit) {
+    	if (allowUserEdit){
+			this.setOnMouseDragged(this::onMouseDragged);
+			this.setOnMousePressed(this::onMousePressed);
+			this.setOnMouseReleased(this::onMouseReleased);
+		}
+		else {
+			this.setOnMouseDragged(null);
+			this.setOnMousePressed(null);
+			this.setOnMouseReleased(null);
+		}
 		this.allowUserEdit = allowUserEdit;
 	}
 
@@ -87,10 +97,20 @@ public class SeaWorld extends ResizableCanvas {
 	}
 
 	public void setAllowUserAttack(boolean allowUserAttack) {
+    	if (allowUserAttack){
+			this.setOnMouseClicked(this::onMouseClicked);
+		}
+		else {
+			this.setOnMouseClicked(null);
+		}
 		this.allowUserAttack = allowUserAttack;
 	}
 
-    private void addWall(boolean vertical, int x, int y){
+	private void onMouseClicked(MouseEvent mouseEvent) {
+    	// ToDo: fire missile
+	}
+
+	private void addWall(boolean vertical, int x, int y){
 		Body body = new Body();
 		if (vertical){
 			body.addFixture(
