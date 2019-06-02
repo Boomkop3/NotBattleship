@@ -12,6 +12,7 @@ public class ConnectionManager {
 	private static ConnectionManager connectionManager;
 	private List<Runnable> onConnection;
 	private int port;
+	private boolean serverRunning;
 
 	public void setOnConnection(Runnable callback){
 		this.onConnection.add(callback);
@@ -57,6 +58,12 @@ public class ConnectionManager {
 		this.createdConnections = new ArrayList<>();
 		this.onConnection = new ArrayList<>();
 		this.port = 10000;
+		this.serverRunning = false;
+	}
+
+	public void startServer() throws IOException {
+		if (this.serverRunning) return;
+		this.serverRunning = true;
 		ServerSocket serverSocket = new ServerSocket(10000);
 		new Thread(()->{
 			while (true) {
