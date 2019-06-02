@@ -33,10 +33,12 @@ public class Ship {
 	}
 
     public void setPosition(Point2D position){
+    	/*
 		position = new Point2D.Double(
 			position.getX() + (GlobalVariables.shipPieceSize/2),
 			position.getY() + (GlobalVariables.shipPieceSize/2)
 		);
+		*/
         for (int i = 0, shipPiecesLength = this.pieces.length; i < shipPiecesLength; i++) {
             ShipPiece piece = this.pieces[i];
             int size = piece.getImage().getHeight();
