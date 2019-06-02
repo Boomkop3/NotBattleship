@@ -54,6 +54,6 @@ public class PlayWindow extends BorderPane {
     }
 
     public void draw(FXGraphics2D g) {
-
+        // Heck yeah!
     }
 }
