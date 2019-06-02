@@ -10,7 +10,12 @@ public class ConnectionManager {
 	private List<Connection> incomingConnections;
 	private List<Connection> createdConnections;
 	private static ConnectionManager connectionManager;
+	private List<Runnable> onConnection;
 	private int port;
+
+	public void setOnConnection(Runnable callback){
+		this.onConnection.add(callback);
+	}
 
 	public static ConnectionManager getInstance() {
 		if (connectionManager == null){
@@ -50,12 +55,16 @@ public class ConnectionManager {
 	private ConnectionManager() throws IOException {
 		this.incomingConnections = new ArrayList<>();
 		this.createdConnections = new ArrayList<>();
+		this.onConnection = new ArrayList<>();
 		this.port = 10000;
 		ServerSocket serverSocket = new ServerSocket(10000);
 		new Thread(()->{
 			while (true) {
 				try {
 					Socket newSocket = serverSocket.accept();
+					this.onConnection.stream().parallel().forEach((runnable)->{
+						runnable.run();
+					});
 					this.incomingConnections.add(
 						new Connection(
 							newSocket
