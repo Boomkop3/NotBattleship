@@ -17,5 +17,21 @@ public class ConnectionWindow extends BorderPane {
         this.setRight(
             new Button("Connect")
         );
+        this.setBottom(
+            new Label("Ready to connect...")
+        );
+    }
+
+    public Label getBottomLabel(){
+        return (Label)super.getBottom();
+    }
+    public Label getLeftLabel(){
+        return (Label)super.getLeft();
+    }
+    public TextField getCenterTextField(){
+        return (TextField)super.getCenter();
+    }
+    public Button getRightButton(){
+        return (Button)super.getRight();
     }
 }
