@@ -9,6 +9,7 @@ import com.unplayable.Networking.ConnectionManager;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -17,7 +18,6 @@ import org.jfree.fx.FXGraphics2D;
 import java.io.IOException;
 
 public class Main extends Application {
-    private BorderPane borderPane;
 
     public static void main(String[] args){
         launch(Main.class);
@@ -31,13 +31,15 @@ public class Main extends Application {
 			)
 		);
     	stage.show();
-		((Button)connectionWindow.getRight()).setOnAction((e)->{
+		connectionWindow.getRightButton().setOnAction((e)->{
 			String serverIp = ((TextField)connectionWindow.getCenter()).getText();
-			stage.hide();
 			try {
+				connectionWindow.getBottomLabel().setText("Connecting...");
 				this.startGame(serverIp, stage);
+				stage.hide();
 			} catch (IOException ex) {
 				ex.printStackTrace();
+				connectionWindow.getBottomLabel().setText("Failed to connect...");
 			}
 		});
     }
@@ -45,7 +47,9 @@ public class Main extends Application {
     private void startGame(String serverIP, Stage stage) throws IOException {
     	System.out.println("Starting game on server: " + serverIP);
     	ConnectionManager manager = ConnectionManager.getInstance();
-    	manager.createConnection(serverIP);
+    	Connection serverConnection = manager.createConnection(serverIP);
+    	System.out.println("Connected to: " + serverConnection.getAdress());
+
     	stage.show();
 	}
 }
