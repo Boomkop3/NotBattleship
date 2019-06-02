@@ -17,16 +17,19 @@ public class Ship {
     private BufferedImage sprite;
     private Rotation rotation;
 
+    public void setRotation(Rotation rotation){
+    	this.rotation = rotation;
+	}
+
 	public ShipPiece[] getPieces() {
 		return pieces;
 	}
 
 	public void setPosition(int x, int y, Rotation rotation){
-    	this.setPosition(new Point2D.Double(x, y), rotation);
+    	this.setPosition(new Point2D.Double(x, y));
 	}
 
-    public void setPosition(Point2D position, Rotation rotation){
-		this.rotation = rotation;
+    public void setPosition(Point2D position){
 		position = new Point2D.Double(
 			position.getX() + (GlobalVariables.shipPieceSize/2),
 			position.getY() + (GlobalVariables.shipPieceSize/2)
@@ -54,6 +57,7 @@ public class Ship {
     public Ship(BufferedImage sprite, World world) {
         // Ship sprites are stored horizontally
 		this.sprite = sprite;
+		this.rotation = Rotation.South;
         int size = sprite.getWidth();
         this.pieces = new ShipPiece[sprite.getHeight()/size];
         for (int i = 0; i < pieces.length; i++) {
