@@ -36,7 +36,6 @@ public class SeaWorld extends ResizableCanvas {
     private Point2D previousPosition;
 
     private List<Ship> getNewShips(World world) {
-        int pieceSize = GlobalVariables.shipPieceSize;
 		List<Ship> shipCollection = new ArrayList<>();
 		try {
 			for (String imageFile : ResourceReader.getInstance().getResourceDirectory("/sprites/ships")){
