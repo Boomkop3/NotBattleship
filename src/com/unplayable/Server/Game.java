@@ -39,5 +39,7 @@ public class Game {
             thread.join();
         }
         System.out.println("All players ready!");
+        System.out.println("Starting match!");
+
     }
 }
