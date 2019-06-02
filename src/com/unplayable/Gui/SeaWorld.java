@@ -45,6 +45,7 @@ public class SeaWorld extends ResizableCanvas {
         this.deltaTimePassed = 0;
         this.updateRate = 1000d/60d;
         this.world = new World();
+        this.addWalls();
 		this.ships = getNewShips(this.world);
 		for (int i = 0; i < ships.size(); i++) {
 			Ship ship = ships.get(i);
@@ -70,6 +71,31 @@ public class SeaWorld extends ResizableCanvas {
             }
         }.start();
     }
+
+    public void addWall(boolean vertical, int x, int y){
+		Body body = new Body();
+		if (vertical){
+			body.addFixture(
+				new Rectangle(1, 1000)
+			);
+		}
+		else {
+			body.addFixture(
+				new Rectangle(1000, 1)
+			);
+		}
+		body.setMass(MassType.INFINITE);
+		body.getTransform().setTranslation(x, y);
+		world.addBody(body);
+	}
+
+	public void addWalls(){
+    	int boardSize = GlobalVariables.shipPieceSize*GlobalVariables.boardWidthHeight;
+    	this.addWall(true, 0, 0);
+    	this.addWall(true, boardSize, 0);
+    	this.addWall(false, 0, 0);
+    	this.addWall(false, 0, boardSize);
+	}
 
     private List<Ship> getNewShips(World world) {
 		List<Ship> shipCollection = new ArrayList<>();
@@ -154,8 +180,9 @@ public class SeaWorld extends ResizableCanvas {
 			((int)mousePos.getX()/35)*35,
 			((int)mousePos.getY()/35)*35
 		);
-
-		this.draggedShip.setPosition(mousePos);
+		if (this.draggedShip != null){
+			this.draggedShip.setPosition(mousePos);
+		}
 		this.draggedShip = null;
 	}
 
@@ -256,6 +283,11 @@ public class SeaWorld extends ResizableCanvas {
 	}
 
 	private void resetRenderArea(FXGraphics2D g){
+		g.setTransform(new AffineTransform());
+		g.setBackground(
+			Color.white
+		);
+		g.clearRect(0, 0, (int)this.getWidth(), (int)this.getHeight());
 		g.setBackground(
 			new Color(100, 149, 237)
 		);
