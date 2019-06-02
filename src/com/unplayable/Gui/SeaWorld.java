@@ -72,7 +72,7 @@ public class SeaWorld extends ResizableCanvas {
         }.start();
     }
 
-    public void addWall(boolean vertical, int x, int y){
+    private void addWall(boolean vertical, int x, int y){
 		Body body = new Body();
 		if (vertical){
 			body.addFixture(
@@ -89,7 +89,7 @@ public class SeaWorld extends ResizableCanvas {
 		world.addBody(body);
 	}
 
-	public void addWalls(){
+	private void addWalls(){
     	int boardSize = GlobalVariables.shipPieceSize*GlobalVariables.boardWidthHeight;
     	this.addWall(true, 0, 0);
     	this.addWall(true, boardSize, 0);
@@ -239,7 +239,7 @@ public class SeaWorld extends ResizableCanvas {
 		}
 	}
 
-	public void drawGrid(FXGraphics2D g){
+	private void drawGrid(FXGraphics2D g){
 		int rows = GlobalVariables.boardWidthHeight;
 		int colls = GlobalVariables.boardWidthHeight;
 		int tileSize = GlobalVariables.shipPieceSize;
