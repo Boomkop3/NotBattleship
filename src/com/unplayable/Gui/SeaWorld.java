@@ -8,6 +8,8 @@ import com.unplayable.Static.ResourceReader;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Parent;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseDragEvent;
+import javafx.scene.input.MouseEvent;
 import org.dyn4j.dynamics.Body;
 import org.dyn4j.dynamics.World;
 import org.dyn4j.geometry.*;
@@ -70,55 +72,65 @@ public class SeaWorld extends ResizableCanvas {
 		);
 	}
 
-    public SeaWorld(Resizable observer, Parent parent) throws IllegalArgumentException {
-        super(observer, parent);
-        this.setOnMousePressed((event -> {
-			Point2D _mousePos = new Point2D.Double(event.getX(), event.getY());
-			Point2D mousePos = getBattleFieldMousePosition(_mousePos);
-			if (!InGame) {
-				for (Ship ship : ships) {
-					for (ShipPiece piece : ship.getPieces()) {
-						if (piece.getPosition().x < mousePos.getX()
-								&& piece.getPosition().x + 35d > mousePos.getX()
-								&& piece.getPosition().y < mousePos.getY()
-								&& piece.getPosition().y + 35d > mousePos.getY()) {
-							this.draggedShip = ship;
-							if (event.getButton().equals(MouseButton.SECONDARY)) {
-								this.draggedShip.setRotation(
-										this.draggedShip.getRotation().rotateRight()
-								);
-							}
-							this.previousPosition = new Point2D.Double(mousePos.getX(), mousePos.getY());
+	private void onMouseDragged(MouseEvent e){
+		if (!InGame) {
+			if (draggedShip != null) {
+				Point2D _mousePos = new Point2D.Double(e.getX(), e.getY());
+				Point2D mousePos = getBattleFieldMousePosition(_mousePos);
+				Point2D position = new Point2D.Double(
+					this.draggedShip.getPosition().getX() + (mousePos.getX() - this.previousPosition.getX()),
+					this.draggedShip.getPosition().getY() + (mousePos.getY() - this.previousPosition.getY()));
+				this.draggedShip.setPosition(position);
+				this.previousPosition = new Point2D.Double(mousePos.getX(), mousePos.getY());
+			}
+
+		}
+	}
+
+	private void onMousePressed(MouseEvent e){
+		Point2D _mousePos = new Point2D.Double(e.getX(), e.getY());
+		Point2D mousePos = getBattleFieldMousePosition(_mousePos);
+		if (!InGame) {
+			for (Ship ship : ships) {
+				for (ShipPiece piece : ship.getPieces()) {
+					if (piece.getPosition().x < mousePos.getX()
+						&& piece.getPosition().x + 35d > mousePos.getX()
+						&& piece.getPosition().y < mousePos.getY()
+						&& piece.getPosition().y + 35d > mousePos.getY()) {
+						this.draggedShip = ship;
+						if (e.getButton().equals(MouseButton.SECONDARY)) {
+							this.draggedShip.setRotation(
+								this.draggedShip.getRotation().rotateRight()
+							);
 						}
+						this.previousPosition = new Point2D.Double(mousePos.getX(), mousePos.getY());
 					}
 				}
 			}
-		}));
-        this.setOnMouseDragged(event -> {
-        	if (!InGame) {
-        		if (draggedShip != null) {
-					Point2D _mousePos = new Point2D.Double(event.getX(), event.getY());
-					Point2D mousePos = getBattleFieldMousePosition(_mousePos);
-					Point2D position = new Point2D.Double(
-							this.draggedShip.getPosition().getX() + (mousePos.getX() - this.previousPosition.getX()),
-							this.draggedShip.getPosition().getY() + (mousePos.getY() - this.previousPosition.getY()));
-        			this.draggedShip.setPosition(position);
-					this.previousPosition = new Point2D.Double(mousePos.getX(), mousePos.getY());
-				}
+		}
+	}
 
-        	}
-		});
-        this.setOnMouseReleased(event -> {
-			if (InGame) return;
-			Point2D mousePos = getBattleFieldMousePosition(event.getX(), event.getY());
-			mousePos = new Point2D.Double(
-				((int)mousePos.getX()/35)*35,
-				((int)mousePos.getY()/35)*35
-			);
+	private void onMouseReleased(MouseEvent e){
+		if (InGame) return;
+		Point2D mousePos = getBattleFieldMousePosition(e.getX(), e.getY());
+		mousePos = new Point2D.Double(
+			((int)mousePos.getX()/35)*35,
+			((int)mousePos.getY()/35)*35
+		);
 
-			this.draggedShip.setPosition(mousePos);
-			this.draggedShip = null;
-		});
+		this.draggedShip.setPosition(mousePos);
+		this.draggedShip = null;
+	}
+
+	private void setEvents(){
+		this.setOnMousePressed(this::onMousePressed);
+		this.setOnMouseDragged(this::onMouseDragged);
+		this.setOnMouseReleased(this::onMouseReleased);
+	}
+
+    public SeaWorld(Resizable observer, Parent parent) throws IllegalArgumentException {
+        super(observer, parent);
+        this.setEvents();
         this.InGame = false;
         this.deltaTimePassed = 0;
         this.updateRate = 1000d/60d;
