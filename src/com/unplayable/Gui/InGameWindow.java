@@ -49,15 +49,7 @@ public class InGameWindow extends BorderPane {
 
     }
 
-    public InGameWindow() {
-        this.ownHits = 0;
-        this.ownHitsRecieved = 0;
-        this.ownKills = 0;
-        this.ownDeaths = 0;
-        this.ownHitsToGo = 18;
-        this.ownKillsToGo = 6;
-        this.otherHitsToGo = 18;
-        this.otherKillsToGo = 6;
+    private void updateInterface(){
         this.infoSelf = new Label("own stats:");
         this.infoOther = new Label("opponent's stats:");
         this.ownHitsText = new Label("your hits: " + this.ownHits);
@@ -72,6 +64,17 @@ public class InGameWindow extends BorderPane {
         this.otherHitsToGoText = new Label("opponent's hits to go: " + this.otherHitsToGo);
         this.ownKillsToGoText = new Label("own kills to go: " + this.ownKillsToGo);
         this.otherKillsToGoText = new Label("opponent's kills to go: " + this.otherKillsToGo);
+    }
+
+    public InGameWindow() {
+        this.ownHits = 0;
+        this.ownHitsRecieved = 0;
+        this.ownKills = 0;
+        this.ownDeaths = 0;
+        this.ownHitsToGo = 18;
+        this.ownKillsToGo = 6;
+        this.otherHitsToGo = 18;
+        this.otherKillsToGo = 6;
 
         this.ownStats = new VBox();
         this.otherStats = new VBox();
