@@ -72,7 +72,6 @@ public class SeaWorld extends ResizableCanvas {
         this.setOnMousePressed((event -> {
         	Point2D _mousePos = new Point2D.Double(event.getX(), event.getY());
         	Point2D mousePos = getBattleFieldMousePosition(_mousePos);
-			createExplosion((int)mousePos.getX()/GlobalVariables.shipPieceSize, (int)mousePos.getY()/GlobalVariables.shipPieceSize);
         	if (!InGame) {
 				System.out.println("X: " + mousePos.getX() + " Y: " + mousePos.getY());
 				for (Ship ship : ships) {
