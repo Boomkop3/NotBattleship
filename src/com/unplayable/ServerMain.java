@@ -7,15 +7,17 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ServerMain {
     private static List<Connection> connectedPlayers;
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         connectedPlayers = new ArrayList<>();
         System.out.println("Running server...");
         ConnectionManager manager = ConnectionManager.getInstance();
+        manager.startServer();
         manager.getInstance().setOnConnection(
             ()->{
                 List<Connection> connections = manager.getIncomingConnections();
@@ -29,6 +31,7 @@ public class ServerMain {
                 }
             }
         );
+        System.out.println("Server running");
     }
 
     private static void startGame(Connection player1, Connection player2) {
