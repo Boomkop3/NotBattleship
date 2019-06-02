@@ -187,15 +187,6 @@ public class SeaWorld extends ResizableCanvas {
 			if (proximity > maxDistance){
 				continue;
 			}
-			double forceRatio = 1d - (proximity / maxDistance);
-			/* Always results in the same direction
-			double angle = location.getAngleBetween(
-				body.getTransform().getTranslation()
-			);
-			body.applyForce(
-				new Vector2(angle).multiply(forceRatio*GlobalVariables.explosionForce)
-			);
-			*/
 			Vector2 force = new Vector2(
 				maxDistance / (bodyLocation.x - location.x) * GlobalVariables.explosionForce,
 				maxDistance / (bodyLocation.y - location.y) * GlobalVariables.explosionForce
@@ -236,10 +227,6 @@ public class SeaWorld extends ResizableCanvas {
 			);
 		}
 
-	}
-
-	private Point2D getGridCoords(Point2D point){
-    	return new Point2D.Double((int)point.getX(), (int)point.getY());
 	}
 
 	private Vector2 getGridCoords(int tileX, int tileY){
