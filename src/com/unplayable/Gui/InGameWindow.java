@@ -75,19 +75,21 @@ public class InGameWindow extends BorderPane {
 
         this.ownStats = new VBox();
         this.otherStats = new VBox();
-        this.ownStats.getChildren().addAll(this.ownHitsText, this.ownHitsRecievedText, this.ownKillsText, this.ownDeathsText, this.ownHitsToGoText, this.ownKillsToGoText);
-        this.otherStats.getChildren().addAll(this.otherHitsText, this.otherHitsRecievedText, this.otherKillsText, this.otherDeathsText, this.otherHitsToGoText, this.otherKillsToGoText);
+        this.ownStats.getChildren().addAll(
+                this.ownHitsText,
+                this.ownHitsRecievedText,
+                this.ownKillsText,
+                this.ownDeathsText,
+                this.ownHitsToGoText,
+                this.ownKillsToGoText);
+        this.otherStats.getChildren().addAll(
+                this.otherHitsText,
+                this.otherHitsRecievedText,
+                this.otherKillsText,
+                this.otherDeathsText,
+                this.otherHitsToGoText,
+                this.otherKillsToGoText);
         this.fire = new Button("Fire!");
-        this.fire.setOnAction(event -> {
-            setOwnHits(getOwnHits() + 1);
-            setOwnHitsRecieved(getOwnHitsRecieved() + 2);
-            setOwnKills(getOwnKills() + 3);
-            setOwnDeaths(getOwnDeaths() + 4);
-            setOwnHitsToGo(getOwnHitsToGo() + 5);
-            setOtherHitsToGo(getOtherHitsToGo() + 6);
-            setOwnKillsToGo(getOwnKillsToGo() + 7);
-            setOtherKillsToGo(getOtherKillsToGo() + 8);
-        });
 
         this.setBottom(this.fire);
         this.setLeft(this.ownStats);
