@@ -8,6 +8,7 @@ import com.unplayable.Networking.ConnectionManager;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
@@ -24,7 +25,7 @@ public class Main extends Application {
         //BorderPane borderPane = new BorderPane();
 
 		ConnectionManager.getInstance();
-
+		this.borderPane = new BorderPane();
 		new Thread(()->{
 			try {
 
@@ -57,8 +58,6 @@ public class Main extends Application {
 				e.printStackTrace();
 			}
 		}).start();
-
-        );
 		borderPane.setCenter(
 			new TextField()
 		);
@@ -72,7 +71,6 @@ public class Main extends Application {
             )
         );
         stage.show();
-        */
     }
 
     private void inputReceived(Object object){
