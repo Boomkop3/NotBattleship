@@ -19,11 +19,16 @@ public class PlayWindow extends BorderPane {
     private Connection connection;
     private SeaWorld seaWorld;
     private Button readyButton;
+    private GameStateView gameState;
 
 	public PlayWindow(Connection connection) {
         this.connection = connection;
         this.readyButton = new Button("Ready");
 		this.setRight(readyButton);
+		this.gameState = new GameStateView();
+		this.setLeft(
+			this.gameState
+		);
         this.seaWorld = new SeaWorld((g)->{}, this);
 		this.seaWorld.setState(new BoatPlacementState(this.seaWorld));
 		this.setCenter(this.seaWorld);
@@ -78,14 +83,15 @@ public class PlayWindow extends BorderPane {
     		Platform.exit();
     		System.exit(-1);
 		}
-		Platform.runLater(()->{
-			this.readyButton.setText(message);
-		});
 		connection.readStringAsync((m)->{
 			new Thread(()->{
 				receiveMessage(m);
 			}).start();
 		});
+    	Platform.runLater(()->{
+			this.setRight(null);
+		});
+    	
     	switch (message) {
 			case GlobalVariables.ClickToFireStateCommand: {
 				this.seaWorld.setState(
