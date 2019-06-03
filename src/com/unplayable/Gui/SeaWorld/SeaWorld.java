@@ -1,6 +1,7 @@
 package com.unplayable.Gui.SeaWorld;
 
 import com.unplayable.Gui.DebugDraw;
+import com.unplayable.Gui.Score;
 import com.unplayable.Gui.SeaWorld.States.SeaWorldState;
 import com.unplayable.Gui.SeaWorld.States.WaitingState;
 import com.unplayable.Ship.ShipPiece;
@@ -37,6 +38,54 @@ public class SeaWorld extends ResizableCanvas {
 	private World world;
     private Vector2 lastExplosionLocation = new Vector2(0);
     private SeaWorldState state;
+
+    public Score getScore(){
+    	return new Score(
+    		0,
+			this.getDestroyedPieceCount(),
+			0,
+			this.getKillCount(),
+			-1,
+			this.getPieceCount() - this.getDestroyedPieceCount(),
+			-1,
+			this.getShipCount() - this.getKillCount()
+		);
+	}
+
+	public int getShipCount(){
+    	return this.ships.size();
+	}
+
+	public int getPieceCount(){
+    	int pieceCount = 0;
+		for (Ship ship : this.ships){
+			pieceCount += ship.getPieces().length;
+		}
+		return pieceCount;
+	}
+
+	public int getDestroyedPieceCount(){
+		int destroyed = 0;
+		for (Ship ship : this.ships){
+			for (ShipPiece piece : ship.getPieces()){
+				if (piece.isDestroyed()){
+					destroyed++;
+				}
+			}
+		}
+		return destroyed;
+	}
+
+	public int getKillCount(){
+		int kills = 0;
+		for (Ship ship : this.ships){
+			if (ship.isDead()){
+				kills++;
+			}
+		}
+		return kills;
+	}
+
     public SeaWorld(Resizable observer, Parent parent) throws IllegalArgumentException {
         super(observer, parent);
         this.setState(

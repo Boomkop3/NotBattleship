@@ -78,15 +78,16 @@ public class Ship {
 		}
     }
 
-    /*
-	public int getCenterPieceIndex(){
-    	return this.pieces.length/2;
+    public boolean isDead(){
+    	boolean isDead = true;
+    	for (ShipPiece piece : this.pieces){
+			if (!piece.isDestroyed()){
+				isDead = false;
+			}
+		}
+    	return isDead;
 	}
 
-    public ShipPiece getCenterPiece(){
-    	return this.pieces[this.getCenterPieceIndex()];
-	}
-	*/
     public void draw(FXGraphics2D g){
     	//int centerIndex = this.getCenterPieceIndex();
     	int size = GlobalVariables.shipPieceSize;

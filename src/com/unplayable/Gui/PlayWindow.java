@@ -6,6 +6,7 @@ import com.unplayable.Gui.SeaWorld.States.ClickToFireState;
 import com.unplayable.Gui.SeaWorld.States.WaitForAttackState;
 import com.unplayable.Gui.SeaWorld.States.WaitingState;
 import com.unplayable.Networking.Connection.Connection;
+import com.unplayable.Ship.Ship;
 import com.unplayable.Static.GlobalVariables;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
@@ -25,14 +26,16 @@ public class PlayWindow extends BorderPane {
         this.connection = connection;
         this.readyButton = new Button("Ready");
 		this.setRight(readyButton);
-		this.gameState = new GameStateView();
-		this.setLeft(
-			this.gameState
-		);
         this.seaWorld = new SeaWorld((g)->{}, this);
 		this.seaWorld.setState(new BoatPlacementState(this.seaWorld));
 		this.setCenter(this.seaWorld);
-
+		this.gameState = new GameStateView(
+			this.seaWorld.getPieceCount(),
+			this.seaWorld.getShipCount()
+		);
+		this.setLeft(
+			this.gameState
+		);
         this.readyButton.setOnAction(event -> {
             try {
                 this.connection.writeString(GlobalVariables.ImReadyCommand);
@@ -91,7 +94,7 @@ public class PlayWindow extends BorderPane {
     	Platform.runLater(()->{
 			this.setRight(null);
 		});
-    	
+
     	switch (message) {
 			case GlobalVariables.ClickToFireStateCommand: {
 				this.seaWorld.setState(
