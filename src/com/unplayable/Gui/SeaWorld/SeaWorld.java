@@ -244,7 +244,6 @@ public class SeaWorld extends ResizableCanvas {
 
 		this.lastExplosionLocation = location;
 
-		//for (Body body : this.world.getBodies()){
 		for (Ship ship : this.ships){
 			for (ShipPiece body : ship.getPieces()){
 				Vector2 bodyLocation = body.getTransform().getTranslation();
