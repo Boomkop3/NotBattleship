@@ -9,7 +9,6 @@ import com.unplayable.Static.GlobalVariables;
 import com.unplayable.Ship.Ship;
 import com.unplayable.Static.ResourceReader;
 import javafx.animation.AnimationTimer;
-import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 import org.dyn4j.dynamics.Body;
@@ -228,13 +227,7 @@ public class SeaWorld extends ResizableCanvas {
 		this.world.update(this.updateRate);
     }
 
-    public void createExplosion(int x, int y){
-		Platform.runLater(()->{
-			doExplosion(x, y);
-		});
-	}
-
-    private boolean doExplosion(int tileX, int tileY){
+    public void createExplosion(int tileX, int tileY){
 		Vector2 location;
     	try {
 			Vector2 GridCoords = getGridCoords(
@@ -246,36 +239,36 @@ public class SeaWorld extends ResizableCanvas {
 			);
 			// Thanks garbage collector!
 		} catch (IllegalArgumentException e){
-    		return false;
+    		return;
 		}
 
 		this.lastExplosionLocation = location;
-    	boolean hit = false;
 
-		for (Body body : this.world.getBodies()){
-			Vector2 bodyLocation = body.getTransform().getTranslation();
-			double maxDistance = GlobalVariables.explosionDistance;
-			double proximity = bodyLocation.distance(
-				location
-			);
-			if (proximity > maxDistance){
-				continue;
-			}
-			if (proximity < GlobalVariables.explosionLethalDistance){
-				if (body instanceof ShipPiece){
-					((ShipPiece)body).setIsDestroyed(true);
-					hit = true;
+		//for (Body body : this.world.getBodies()){
+		for (Ship ship : this.ships){
+			for (ShipPiece body : ship.getPieces()){
+				Vector2 bodyLocation = body.getTransform().getTranslation();
+				double maxDistance = GlobalVariables.explosionDistance;
+				double proximity = bodyLocation.distance(
+					location
+				);
+				if (proximity > maxDistance){
+					continue;
 				}
+				if (proximity < GlobalVariables.explosionLethalDistance){
+					if (body instanceof ShipPiece){
+						((ShipPiece)body).setIsDestroyed(true);
+					}
+				}
+				Vector2 force = new Vector2(
+					maxDistance / (bodyLocation.x - location.x) * GlobalVariables.explosionForce,
+					maxDistance / (bodyLocation.y - location.y) * GlobalVariables.explosionForce
+				);
+				body.applyForce(
+					force
+				);
 			}
-			Vector2 force = new Vector2(
-				maxDistance / (bodyLocation.x - location.x) * GlobalVariables.explosionForce,
-				maxDistance / (bodyLocation.y - location.y) * GlobalVariables.explosionForce
-			);
-			body.applyForce(
-				force
-			);
 		}
-		return hit;
 	}
 
 	private void drawGrid(FXGraphics2D g){
