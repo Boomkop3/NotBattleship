@@ -8,7 +8,7 @@ public class GlobalVariables {
     public static final int boardWidthHeight = 12; // The number of tiles on each side of the playing field
     public static final int explosionDistance = 60; // the distance of the blast radius
     public static final int explosionLethalDistance = 45; // The distance at which the blast radius causes damage to ships
-    public static final int explosionForce = 100000; // The ammount of force the ships are hit with
+    public static final int explosionForce = 1000; // The ammount of force the ships are hit with
 
 	// Commands used to communicate over the network, completely arbitary
     public static final String startGameCommand = "startgameplz";
