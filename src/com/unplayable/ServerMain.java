@@ -25,6 +25,8 @@ public class ServerMain {
                         connections.get(connectionCount-2),
                         connections.get(connectionCount-1)
                     );
+                    connections.remove(connectionCount-1);
+                    connections.remove(connectionCount-1);
                 }
             }
         );
