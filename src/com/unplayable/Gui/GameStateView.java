@@ -73,15 +73,15 @@ public class GameStateView extends BorderPane {
         this.otherKillsToGoText = new Label("opponent's kills to go: " + this.otherKillsToGo);
     }
 
-    public GameStateView() {
+    public GameStateView(int hitsToGo, int killsToGo) {
         this.ownHits = 0;
         this.ownHitsRecieved = 0;
         this.ownKills = 0;
         this.ownDeaths = 0;
-        this.ownHitsToGo = 18;
-        this.ownKillsToGo = 6;
-        this.otherHitsToGo = 18;
-        this.otherKillsToGo = 6;
+        this.ownHitsToGo = hitsToGo;
+        this.ownKillsToGo = killsToGo;
+        this.otherHitsToGo = hitsToGo;
+        this.otherKillsToGo = killsToGo;
         this.updateInterface();
 
         this.ownStats = new VBox();
