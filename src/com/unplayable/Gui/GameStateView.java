@@ -1,5 +1,6 @@
 package com.unplayable.Gui;
 
+import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -10,24 +11,16 @@ public class GameStateView extends BorderPane {
     private VBox otherStats;
     private Label infoSelf;
     private Label infoOther;
-    private int ownHits;
     private Label ownHitsText;
     private Label otherHitsText;
-    private int ownHitsRecieved;
     private Label ownHitsRecievedText;
     private Label otherHitsRecievedText;
-    private int ownKills;
     private Label ownKillsText;
     private Label otherKillsText;
-    private int ownDeaths;
     private Label ownDeathsText;
     private Label otherDeathsText;
-    private int ownHitsToGo;
-    private int otherHitsToGo;
     private Label ownHitsToGoText;
     private Label otherHitsToGoText;
-    private int ownKillsToGo;
-    private int otherKillsToGo;
     private Label ownKillsToGoText;
     private Label otherKillsToGoText;
     private Score score;
@@ -41,7 +34,7 @@ public class GameStateView extends BorderPane {
         this.updateInterface();
     }
 
-    public void updateInterface(){
+    public void initInterFace(){
         this.infoSelf = new Label("own stats:");
         this.infoOther = new Label("opponent's stats:");
         this.ownHitsText = new Label("your hits: " + this.score.getHits());
@@ -58,16 +51,41 @@ public class GameStateView extends BorderPane {
         this.otherKillsToGoText = new Label("opponent's kills to go: " + this.score.getOtherKillsToGo());
     }
 
+    public void updateInterface(){
+        Platform.runLater(
+            this::runUpdateInterface
+        );
+    }
+
+    private void runUpdateInterface(){
+        this.infoSelf.setText("own stats:");
+        this.infoOther.setText("opponent's stats:");
+        this.ownHitsText.setText("your hits: " + this.score.getHits());
+        this.otherHitsText.setText("opponent's hits: " + this.score.getHitsRecieved());
+        this.ownHitsRecievedText.setText("own hits recieved: " + this.score.getHitsRecieved());
+        this.otherHitsRecievedText.setText("opponent's hits recieved: " + this.score.getHits());
+        this.ownKillsText.setText("own kills: " + this.score.getKills());
+        this.otherKillsText.setText("opponent's kills: " + this.score.getDeaths());
+        this.ownDeathsText.setText("own deaths: " + this.score.getDeaths());
+        this.otherDeathsText.setText("opponent's deaths: " + this.score.getKills());
+        this.ownHitsToGoText.setText("own hits to go: " + this.score.getOwnHitsToGo());
+        this.otherHitsToGoText.setText("opponent's hits to go: " + this.score.getOtherHitsToGo());
+        this.ownKillsToGoText.setText("own kills to go: " + this.score.getOwnKillsToGo());
+        this.otherKillsToGoText.setText("opponent's kills to go: " + this.score.getOtherKillsToGo());
+    }
+
     public GameStateView(int hitsToGo, int killsToGo) {
-        this.ownHits = 0;
-        this.ownHitsRecieved = 0;
-        this.ownKills = 0;
-        this.ownDeaths = 0;
-        this.ownHitsToGo = hitsToGo;
-        this.ownKillsToGo = killsToGo;
-        this.otherHitsToGo = hitsToGo;
-        this.otherKillsToGo = killsToGo;
-        this.updateInterface();
+        this.score = new Score(
+            0,
+            0,
+            0,
+            0,
+            hitsToGo,
+            hitsToGo,
+            killsToGo,
+            killsToGo
+        );
+        this.initInterFace();
 
         this.ownStats = new VBox();
         this.otherStats = new VBox();
@@ -88,209 +106,5 @@ public class GameStateView extends BorderPane {
 
         this.setLeft(this.ownStats);
         this.setRight(this.otherStats);
-    }
-
-    public VBox getOwnStats() {
-        return ownStats;
-    }
-
-    public void setOwnStats(VBox ownStats) {
-        this.ownStats = ownStats;
-    }
-
-    public VBox getOtherStats() {
-        return otherStats;
-    }
-
-    public void setOtherStats(VBox otherStats) {
-        this.otherStats = otherStats;
-    }
-
-    public Label getOwnHitsText() {
-        return ownHitsText;
-    }
-
-    public void setOwnHitsText(Label ownHitsText) {
-        this.ownHitsText = ownHitsText;
-    }
-
-    public Label getOtherHitsText() {
-        return otherHitsText;
-    }
-
-    public void setOtherHitsText(Label otherHitsText) {
-        this.otherHitsText = otherHitsText;
-    }
-
-    public Label getOwnHitsRecievedText() {
-        return ownHitsRecievedText;
-    }
-
-    public void setOwnHitsRecievedText(Label ownHitsRecievedText) {
-        this.ownHitsRecievedText = ownHitsRecievedText;
-    }
-
-    public Label getOtherHitsRecievedText() {
-        return otherHitsRecievedText;
-    }
-
-    public void setOtherHitsRecievedText(Label otherHitsRecievedText) {
-        this.otherHitsRecievedText = otherHitsRecievedText;
-    }
-
-    public Label getOwnKillsText() {
-        return ownKillsText;
-    }
-
-    public void setOwnKillsText(Label ownKillsText) {
-        this.ownKillsText = ownKillsText;
-    }
-
-    public Label getOtherKillsText() {
-        return otherKillsText;
-    }
-
-    public void setOtherKillsText(Label otherKillsText) {
-        this.otherKillsText = otherKillsText;
-    }
-
-    public Label getOwnDeathsText() {
-        return ownDeathsText;
-    }
-
-    public void setOwnDeathsText(Label ownDeathsText) {
-        this.ownDeathsText = ownDeathsText;
-    }
-
-    public Label getOtherDeathsText() {
-        return otherDeathsText;
-    }
-
-    public void setOtherDeathsText(Label otherDeathsText) {
-        this.otherDeathsText = otherDeathsText;
-    }
-
-    public Label getOwnHitsToGoText() {
-        return ownHitsToGoText;
-    }
-
-    public void setOwnHitsToGoText(Label ownHistToGoText) {
-        this.ownHitsToGoText = ownHistToGoText;
-    }
-
-    public Label getOtherHitsToGoText() {
-        return otherHitsToGoText;
-    }
-
-    public void setOtherHitsToGoText(Label otherHitsToGoText) {
-        this.otherHitsToGoText = otherHitsToGoText;
-    }
-
-    public Label getOwnKillsToGoText() {
-        return ownKillsToGoText;
-    }
-
-    public void setOwnKillsToGoText(Label ownKillsToGoText) {
-        this.ownKillsToGoText = ownKillsToGoText;
-    }
-
-    public Label getOtherKillsToGoText() {
-        return otherKillsToGoText;
-    }
-
-    public void setOtherKillsToGoText(Label otherKillsToGoText) {
-        this.otherKillsToGoText = otherKillsToGoText;
-    }
-
-    public int getOwnHits() {
-        return ownHits;
-    }
-
-    public void setOwnHits(int ownHits) {
-        this.ownHits = ownHits;
-        this.ownHitsText.setText("own hits: " + this.ownHits);
-        this.otherHitsRecievedText.setText("opponent's hits recieved: " + this.ownHits);
-    }
-
-    public int getOwnHitsRecieved() {
-        return ownHitsRecieved;
-    }
-
-    public void setOwnHitsRecieved(int ownHitsRecieved) {
-        this.ownHitsRecieved = ownHitsRecieved;
-        this.otherHitsText.setText("opponent's hits: " + this.ownHitsRecieved);
-        this.ownHitsRecievedText.setText("own hits recieved: " + this.ownHitsRecieved);
-    }
-
-    public int getOwnKills() {
-        return ownKills;
-    }
-
-    public void setOwnKills(int ownKills) {
-        this.ownKills = ownKills;
-        this.ownKillsText.setText("own kills: " + this.ownKills);
-        this.otherDeathsText.setText("opponent's deaths:" + this.ownKills);
-    }
-
-    public int getOwnDeaths() {
-        return ownDeaths;
-    }
-
-    public void setOwnDeaths(int ownDeaths) {
-        this.ownDeaths = ownDeaths;
-        this.ownDeathsText.setText("own deaths: " + this.ownDeaths);
-        this.otherKillsText.setText("opponent's kills: " + this.ownDeaths);
-    }
-
-    public int getOwnHitsToGo() {
-        return ownHitsToGo;
-    }
-
-    public void setOwnHitsToGo(int ownHitsToGo) {
-        this.ownHitsToGo = ownHitsToGo;
-        this.ownHitsToGoText.setText("own hits to go: " + this.ownHitsToGo);
-    }
-
-    public int getOwnKillsToGo() {
-        return ownKillsToGo;
-    }
-
-    public void setOwnKillsToGo(int ownKillsToGo) {
-        this.ownKillsToGo = ownKillsToGo;
-        this.ownKillsToGoText.setText("own kills to go: " + this.ownKillsToGo);
-    }
-
-    public Label getInfoSelf() {
-        return infoSelf;
-    }
-
-    public void setInfoSelf(Label infoSelf) {
-        this.infoSelf = infoSelf;
-    }
-
-    public Label getInfoOther() {
-        return infoOther;
-    }
-
-    public void setInfoOther(Label infoOther) {
-        this.infoOther = infoOther;
-    }
-
-    public int getOtherHitsToGo() {
-        return otherHitsToGo;
-    }
-
-    public void setOtherHitsToGo(int otherHitsToGo) {
-        this.otherHitsToGo = otherHitsToGo;
-        this.otherHitsToGoText.setText("opponent's hits to go: " + this.otherHitsToGo);
-    }
-
-    public int getOtherKillsToGo() {
-        return otherKillsToGo;
-    }
-
-    public void setOtherKillsToGo(int otherKillsToGo) {
-        this.otherKillsToGo = otherKillsToGo;
-        this.otherKillsToGoText.setText("opponent's kills to go: " + this.otherKillsToGo);
     }
 }
