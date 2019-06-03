@@ -16,6 +16,24 @@ public class ConnectionManager {
 	private int port;
 	private boolean serverRunning;
 
+	public static void close() {
+		for (Connection connection : connectionManager.incomingConnections){
+			try {
+				connection.getSocket().close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		for (Connection connection : connectionManager.createdConnections){
+			try {
+				connection.getSocket().close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		connectionManager = null;
+	}
+
 	public void setOnConnection(Runnable callback){
 		this.onConnection.add(callback);
 	}

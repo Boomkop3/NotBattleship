@@ -40,6 +40,12 @@ public class Main extends Application {
 		});
     }
 
+	@Override
+	public void stop() throws Exception {
+		ConnectionManager.close();
+		super.stop();
+	}
+
     private void startGame(String serverIP, Stage stage) throws IOException {
 		this.connectionWindow.getBottomLabel().setText("Starting game on server: " + serverIP);
     	ConnectionManager manager = ConnectionManager.getInstance();

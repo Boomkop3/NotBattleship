@@ -74,6 +74,10 @@ public class PlayWindow extends BorderPane {
     private void receiveMessage(String message){
 		Thread.yield();
     	System.out.println("recieved message: " + message);
+    	if (message == null){
+    		Platform.exit();
+    		System.exit(-1);
+		}
 		Platform.runLater(()->{
 			this.readyButton.setText(message);
 		});

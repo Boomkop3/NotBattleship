@@ -45,7 +45,7 @@ public class Connection implements ConnectionBackEnd {
 	}
 
 	@Override
-	public void writeString(String string) {
+	public void writeString(String string) throws IOException {
 		this.streamBackEnd.writeString(string);
 	}
 

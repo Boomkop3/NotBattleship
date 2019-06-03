@@ -38,24 +38,23 @@ public class DataStreamConnection implements ConnectionBackEnd {
 	}
 
 	@Override
-	public void writeString(String string) {
-		try {
-			DataOutputStream outputStream = this.getDataOutputStream();
-			outputStream.writeUTF(string);
-			outputStream.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void writeString(String string) throws IOException {
+		DataOutputStream outputStream = this.getDataOutputStream();
+		outputStream.writeUTF(string);
+		outputStream.flush();
 	}
+
+	private String lastReadString = "";
 
 	@Override
 	public String readString() {
+		this.lastReadString = null;
 		try {
-			return getDataInputStream().readUTF();
+			this.lastReadString = getDataInputStream().readUTF();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return lastReadString;
 	}
 
 	@Override

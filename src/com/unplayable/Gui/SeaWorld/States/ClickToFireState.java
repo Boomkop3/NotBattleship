@@ -35,7 +35,11 @@ public class ClickToFireState extends SeaWorldState {
 		Point2D mousePosition = this.seaWorld.getBattleFieldMousePosition(e);
 		int x = (int)mousePosition.getX()/35;
 		int y = (int)mousePosition.getY()/35;
-		((PlayWindow)this.seaWorld.getParent()).getConnection().writeString("hit:"+x+":"+y);
+		try {
+			((PlayWindow)this.seaWorld.getParent()).getConnection().writeString("hit:"+x+":"+y);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		this.seaWorld.setState(
 			new WaitForAttackState(this.seaWorld)
 		);

@@ -42,22 +42,21 @@ public class ObjectStreamConnection implements ConnectionBackEnd {
 	}
 
 	@Override
-	public void writeString(String string) {
-		try {
-			this.getObjectOutputStream().writeObject(string);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public void writeString(String string) throws IOException {
+		this.getObjectOutputStream().writeObject(string);
 	}
+
+	private String lastReadString = "";
 
 	@Override
 	public String readString() {
+		this.lastReadString = null;
 		try {
-			return ((String)this.getObjectInputStream().readObject());
+			this.lastReadString = ((String)this.getObjectInputStream().readObject());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return this.lastReadString;
 	}
 
 	@Override

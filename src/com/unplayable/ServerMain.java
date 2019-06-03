@@ -32,12 +32,10 @@ public class ServerMain {
     }
 
     private static void startGame(Connection player1, Connection player2) {
-        try {
-            new Game(player1, player2);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    	try {
+			new Game(player1, player2);
+		} catch (Exception e){
+    		e.printStackTrace();
+		}
     }
 }
