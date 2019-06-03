@@ -19,8 +19,8 @@ public class Connection implements ConnectionBackEnd {
 	private DataOutputStream dataOutputStream;
 
 	public Connection(Socket socket) throws IOException {
-		this.streamBackEnd = new ObjectStreamConnection(socket);
-		//this.streamBackEnd = new DataStreamConnection(socket);
+		//this.streamBackEnd = new ObjectStreamConnection(socket);
+		this.streamBackEnd = new DataStreamConnection(socket);
 	}
 
 	public String getAdress(){
