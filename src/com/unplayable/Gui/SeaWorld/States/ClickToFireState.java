@@ -5,6 +5,8 @@ import com.unplayable.Gui.PlayWindow;
 import com.unplayable.Gui.Score;
 import com.unplayable.Gui.SeaWorld.SeaWorld;
 
+import com.unplayable.Static.GlobalVariables;
+import javafx.application.Platform;
 import javafx.scene.input.MouseEvent;
 import org.jfree.fx.FXGraphics2D;
 
@@ -14,6 +16,9 @@ import java.io.IOException;
 public class ClickToFireState extends SeaWorldState {
 	public ClickToFireState(SeaWorld seaWorld) {
 		super(seaWorld);
+		Platform.runLater(()->{
+			((PlayWindow)this.seaWorld.getParent()).getReadyButton().setText(GlobalVariables.fireModeText);
+		});
 	}
 
 	@Override
