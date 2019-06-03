@@ -2,7 +2,7 @@ package com.unplayable.Static;
 
 public class GlobalVariables {
 	public static final boolean useObjectStream = false; // false = DataStream // true = ObjectStream
-	public static boolean debug = false; // debugging options, including debugdraw
+	public static boolean debug = true; // debugging options, including debugdraw
 
     public static final int shipPieceSize = 35; // Grid size, don't change this. I don't think it's properly implemented
     public static final int boardWidthHeight = 12; // The number of tiles on each side of the playing field
