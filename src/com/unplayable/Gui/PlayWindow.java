@@ -81,7 +81,7 @@ public class PlayWindow extends BorderPane {
 
     private void receiveMessage(String message){
 		Thread.yield();
-    	System.out.println("recieved message: " + message);
+    	System.out.println("Recieved message: " + message);
     	if (message == null){
     		Platform.exit();
     		System.exit(-1);
