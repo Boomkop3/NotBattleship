@@ -62,4 +62,8 @@ public class ShipPiece extends Body {
                 position.y - (GlobalVariables.shipPieceSize / 2)
         );
     }
+
+	public void setIsDestroyed(boolean destroyed) {
+    	this.destroyed = destroyed;
+	}
 }

@@ -1,14 +1,14 @@
-package com.unplayable.Gui;
+package com.unplayable.Gui.SeaWorld;
 
+import com.unplayable.Gui.DebugDraw;
+import com.unplayable.Gui.SeaWorld.States.SeaWorldState;
+import com.unplayable.Gui.SeaWorld.States.WaitingState;
 import com.unplayable.Ship.ShipPiece;
 import com.unplayable.Static.GlobalVariables;
-import com.unplayable.Ship.Rotation;
 import com.unplayable.Ship.Ship;
 import com.unplayable.Static.ResourceReader;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Parent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import org.dyn4j.dynamics.Body;
 import org.dyn4j.dynamics.World;
@@ -29,21 +29,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SeaWorld extends ResizableCanvas {
-	private boolean allowUserEdit;
-	private boolean allowUserAttack;
-	private boolean runSimulation;
+    public List<Ship> ships;
+    public Ship draggedShip = null;
+    public Point2D previousMousePosition;
     private double deltaTimePassed;
     private double updateRate;
 	private World world;
-    private List<Ship> ships;
-    private Ship draggedShip = null;
-    private Point2D previousPosition;
     private Vector2 lastExplosionLocation = new Vector2(0);
+    private SeaWorldState state;
     public SeaWorld(Resizable observer, Parent parent) throws IllegalArgumentException {
         super(observer, parent);
-        this.allowUserEdit = false;
-        this.allowUserAttack = false;
-        this.runSimulation = false;
+        this.setState(
+        	new WaitingState(this)
+		);
+        this.setEvents();
         this.deltaTimePassed = 0;
         this.updateRate = 1000d/60d;
         this.world = new World();
@@ -74,40 +73,19 @@ public class SeaWorld extends ResizableCanvas {
         }.start();
     }
 
-	public boolean isAllowUserEdit() {
-		return allowUserEdit;
+	private void setEvents() {
+		this.setOnMouseDragged(this::onMouseDragged);
+		this.setOnMousePressed(this::onMousePressed);
+		this.setOnMouseReleased(this::onMouseReleased);
+		this.setOnMouseClicked(this::onMouseClicked);
 	}
 
-	public void setAllowUserEdit(boolean allowUserEdit) {
-    	if (allowUserEdit){
-			this.setOnMouseDragged(this::onMouseDragged);
-			this.setOnMousePressed(this::onMousePressed);
-			this.setOnMouseReleased(this::onMouseReleased);
-		}
-		else {
-			this.setOnMouseDragged(null);
-			this.setOnMousePressed(null);
-			this.setOnMouseReleased(null);
-		}
-		this.allowUserEdit = allowUserEdit;
-	}
-
-	public boolean isAllowUserAttack() {
-		return allowUserAttack;
-	}
-
-	public void setAllowUserAttack(boolean allowUserAttack) {
-    	if (allowUserAttack){
-			this.setOnMouseClicked(this::onMouseClicked);
-		}
-		else {
-			this.setOnMouseClicked(null);
-		}
-		this.allowUserAttack = allowUserAttack;
+	public void setState(SeaWorldState state){
+    	this.state = state;
 	}
 
 	private void onMouseClicked(MouseEvent mouseEvent) {
-    	// ToDo: fire missile
+    	this.state.onMouseClicked(mouseEvent);
 	}
 
 	private void addWall(boolean vertical, int x, int y){
@@ -149,7 +127,7 @@ public class SeaWorld extends ResizableCanvas {
 		return shipCollection;
     }
 
-	private Point2D getBattleFieldMousePosition(MouseEvent e){
+	public Point2D getBattleFieldMousePosition(MouseEvent e){
 		return getBattleFieldMousePosition(new Point2D.Double(e.getX(), e.getY()));
 	}
 
@@ -175,74 +153,34 @@ public class SeaWorld extends ResizableCanvas {
 	}
 
 	private void onMouseDragged(MouseEvent e){
-		if (draggedShip != null) {
-			Point2D mousePos = this.getBattleFieldMousePosition(e);
-			Point2D position = new Point2D.Double(
-				this.draggedShip.getPosition().getX() + (mousePos.getX() - this.previousPosition.getX()),
-				this.draggedShip.getPosition().getY() + (mousePos.getY() - this.previousPosition.getY()));
-			this.draggedShip.setPosition(position);
-			this.previousPosition = new Point2D.Double(mousePos.getX(), mousePos.getY());
-		}
+		this.state.onMouseDragged(e);
 	}
 
 	private void onMousePressed(MouseEvent e){
-		Point2D mousePos = this.getBattleFieldMousePosition(e);
-		for (Ship ship : ships) {
-			for (ShipPiece piece : ship.getPieces()) {
-				if (piece.getPosition().x < mousePos.getX()
-					&& piece.getPosition().x + 35d > mousePos.getX()
-					&& piece.getPosition().y < mousePos.getY()
-					&& piece.getPosition().y + 35d > mousePos.getY()) {
-					this.draggedShip = ship;
-					if (e.getButton().equals(MouseButton.SECONDARY)) {
-						this.draggedShip.setRotation(
-							this.draggedShip.getRotation().rotateRight()
-						);
-					}
-					this.previousPosition = new Point2D.Double(mousePos.getX(), mousePos.getY());
-				}
-			}
-		}
+    	this.state.onMousePressed(e);
 	}
 
 	private void onMouseReleased(MouseEvent e){
-		Point2D mousePos = this.getBattleFieldMousePosition(e);
-		mousePos = new Point2D.Double(
-			((int)mousePos.getX()/35)*35,
-			((int)mousePos.getY()/35)*35
-		);
-		if (this.draggedShip != null){
-			this.draggedShip.setPosition(mousePos);
-		}
-		this.draggedShip = null;
+		this.state.onMouseReleased(e);
 	}
 
 
     public void update(double deltaTimeMillis){
+    	Thread.yield();
         this.deltaTimePassed += deltaTimeMillis;
         if (deltaTimePassed > updateRate){
             deltaTimePassed = deltaTimePassed - updateRate;
-            this.update();
+            this.state.update();
         }
     }
 
-	public boolean isRunSimulation() {
-		return runSimulation;
-	}
-
-	public void setRunSimulation(boolean runSimulation) {
-		this.runSimulation = runSimulation;
-	}
-
-	private void update(){
-    	if (this.runSimulation) {
-			this.world.update(this.updateRate);
-		}
+	public void update(){
+		this.world.update(this.updateRate);
     }
 
     public void createExplosion(int tileX, int tileY){
 		Vector2 location;
-    	{
+    	try {
 			Vector2 GridCoords = getGridCoords(
 				tileX, tileY
 			);
@@ -250,7 +188,10 @@ public class SeaWorld extends ResizableCanvas {
 				GridCoords.x + (GlobalVariables.shipPieceSize/2),
 				GridCoords.y + (GlobalVariables.shipPieceSize/2)
 			);
-		} // Thanks garbage collector!
+			// Thanks garbage collector!
+		} catch (IllegalArgumentException e){
+    		return;
+		}
 
 		this.lastExplosionLocation = location;
 
@@ -262,6 +203,11 @@ public class SeaWorld extends ResizableCanvas {
 			);
 			if (proximity > maxDistance){
 				continue;
+			}
+			if (proximity < GlobalVariables.explosionLethalDistance){
+				if (body instanceof ShipPiece){
+					((ShipPiece)body).setIsDestroyed(true);
+				}
 			}
 			Vector2 force = new Vector2(
 				maxDistance / (bodyLocation.x - location.x) * GlobalVariables.explosionForce,
@@ -337,6 +283,7 @@ public class SeaWorld extends ResizableCanvas {
 
     public void draw(FXGraphics2D g) {
     	resetRenderArea(g);
+    	Thread.yield();
         drawGrid(g);
         drawShips(g);
         drawDebug(g);
@@ -365,5 +312,9 @@ public class SeaWorld extends ResizableCanvas {
 				5, 5
 			)
 		);
+	}
+
+	public void handleInput(String message) {
+    	this.state.handleInput(message);
 	}
 }
