@@ -30,7 +30,6 @@ public class GameStateView extends BorderPane {
     private int otherKillsToGo;
     private Label ownKillsToGoText;
     private Label otherKillsToGoText;
-    private Button fire;
 
     public Score getScore(){
         return new Score(
@@ -101,9 +100,7 @@ public class GameStateView extends BorderPane {
                 this.otherDeathsText,
                 this.otherHitsToGoText,
                 this.otherKillsToGoText);
-        this.fire = new Button("Fire!");
 
-        this.setBottom(this.fire);
         this.setLeft(this.ownStats);
         this.setRight(this.otherStats);
     }
