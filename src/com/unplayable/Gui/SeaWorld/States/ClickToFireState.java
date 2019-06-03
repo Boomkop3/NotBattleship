@@ -1,6 +1,8 @@
 package com.unplayable.Gui.SeaWorld.States;
 
+import com.unplayable.Gui.GameStateView;
 import com.unplayable.Gui.PlayWindow;
+import com.unplayable.Gui.Score;
 import com.unplayable.Gui.SeaWorld.SeaWorld;
 
 import javafx.scene.input.MouseEvent;
@@ -41,7 +43,7 @@ public class ClickToFireState extends SeaWorldState {
 			e1.printStackTrace();
 		}
 		this.seaWorld.setState(
-			new GettingHitState(this.seaWorld)
+			new WaitForAttackState(this.seaWorld)
 		);
 	}
 
@@ -52,6 +54,6 @@ public class ClickToFireState extends SeaWorldState {
 
 	@Override
 	public void update() {
-		seaWorld.update();
+		this.seaWorld.update();
 	}
 }
