@@ -3,6 +3,7 @@ package com.unplayable.Networking.Connection;
 import com.unplayable.Gui.Score;
 import com.unplayable.Networking.ScoreNetworkCallback;
 import com.unplayable.Networking.StringNetworkCallback;
+import com.unplayable.Static.GlobalVariables;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -19,8 +20,12 @@ public class Connection implements ConnectionBackEnd {
 	private DataOutputStream dataOutputStream;
 
 	public Connection(Socket socket) throws IOException {
-		//this.streamBackEnd = new ObjectStreamConnection(socket);
-		this.streamBackEnd = new DataStreamConnection(socket);
+		if (GlobalVariables.useObjectStream){
+			this.streamBackEnd = new ObjectStreamConnection(socket);
+		}
+		else {
+			this.streamBackEnd = new DataStreamConnection(socket);
+		}
 	}
 
 	public String getAdress(){
