@@ -30,47 +30,32 @@ public class GameStateView extends BorderPane {
     private int otherKillsToGo;
     private Label ownKillsToGoText;
     private Label otherKillsToGoText;
+    private Score score;
 
     public Score getScore(){
-        return new Score(
-            this.ownHits,
-            this.ownHitsRecieved,
-            this.ownKills,
-            this.ownDeaths,
-            this.ownHitsToGo,
-            this.otherHitsToGo,
-            this.ownKillsToGo,
-            this.otherKillsToGo
-        );
+        return this.score;
     }
 
     public void setScore(Score score){
-        this.ownHits = score.getHits();
-        this.ownHitsRecieved = score.getHitsRecieved();
-        this.ownKills = score.getKills();
-        this.ownDeaths = score.getDeaths();
-        this.ownHitsToGo = score.getOwnHitsToGo();
-        this.ownKillsToGo = score.getOwnKillsToGo();
-        this.otherHitsToGo = score.getOtherHitsToGo();
-        this.otherKillsToGo = score.getOtherKillsToGo();
+        this.score = score;
         this.updateInterface();
     }
 
     public void updateInterface(){
         this.infoSelf = new Label("own stats:");
         this.infoOther = new Label("opponent's stats:");
-        this.ownHitsText = new Label("your hits: " + this.ownHits);
-        this.otherHitsText = new Label("opponent's hits: " + this.ownHitsRecieved);
-        this.ownHitsRecievedText = new Label("own hits recieved: " + this.ownHitsRecieved);
-        this.otherHitsRecievedText = new Label("opponent's hits recieved: " + this.ownHits);
-        this.ownKillsText = new Label("own kills: " + this.ownKills);
-        this.otherKillsText = new Label("opponent's kills: " + this.ownDeaths);
-        this.ownDeathsText = new Label("own deaths: " + this.ownDeaths);
-        this.otherDeathsText = new Label("opponent's deaths: " + this.ownKills);
-        this.ownHitsToGoText = new Label("own hits to go: " + this.ownHitsToGo);
-        this.otherHitsToGoText = new Label("opponent's hits to go: " + this.otherHitsToGo);
-        this.ownKillsToGoText = new Label("own kills to go: " + this.ownKillsToGo);
-        this.otherKillsToGoText = new Label("opponent's kills to go: " + this.otherKillsToGo);
+        this.ownHitsText = new Label("your hits: " + this.score.getHits());
+        this.otherHitsText = new Label("opponent's hits: " + this.score.getHitsRecieved());
+        this.ownHitsRecievedText = new Label("own hits recieved: " + this.score.getHitsRecieved());
+        this.otherHitsRecievedText = new Label("opponent's hits recieved: " + this.score.getHits());
+        this.ownKillsText = new Label("own kills: " + this.score.getKills());
+        this.otherKillsText = new Label("opponent's kills: " + this.score.getDeaths());
+        this.ownDeathsText = new Label("own deaths: " + this.score.getDeaths());
+        this.otherDeathsText = new Label("opponent's deaths: " + this.score.getKills());
+        this.ownHitsToGoText = new Label("own hits to go: " + this.score.getOwnHitsToGo());
+        this.otherHitsToGoText = new Label("opponent's hits to go: " + this.score.getOtherHitsToGo());
+        this.ownKillsToGoText = new Label("own kills to go: " + this.score.getOwnKillsToGo());
+        this.otherKillsToGoText = new Label("opponent's kills to go: " + this.score.getOtherKillsToGo());
     }
 
     public GameStateView(int hitsToGo, int killsToGo) {
