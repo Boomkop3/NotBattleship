@@ -17,7 +17,7 @@ public class Game {
         System.out.println("starting game between: ");
 
         Arrays.stream(players).parallel().forEach((connection)->{
-            System.out.println("> " + connection.getIp());
+            System.out.println("> " + connection.getAdress());
         });
 
         List<Thread> waitingPlayers = new ArrayList<>();
