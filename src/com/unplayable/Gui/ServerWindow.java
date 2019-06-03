@@ -1,9 +1,9 @@
 package com.unplayable.Gui;
 
+import com.unplayable.Gui.SeaWorld.SeaWorld;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.jfree.fx.FXGraphics2D;
 

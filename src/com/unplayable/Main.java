@@ -2,7 +2,7 @@ package com.unplayable;
 
 import com.unplayable.Gui.ConnectionWindow;
 import com.unplayable.Gui.PlayWindow;
-import com.unplayable.Networking.Connection;
+import com.unplayable.Networking.Connection.Connection;
 import com.unplayable.Networking.ConnectionManager;
 import com.unplayable.Static.GlobalVariables;
 import javafx.application.Application;
@@ -41,33 +41,23 @@ public class Main extends Application {
     }
 
     private void startGame(String serverIP, Stage stage) throws IOException {
-
-		stage.setScene(
-			new Scene(
-				new PlayWindow(new Connection(null))
-			)
-		);
-
 		this.connectionWindow.getBottomLabel().setText("Starting game on server: " + serverIP);
     	ConnectionManager manager = ConnectionManager.getInstance();
     	Connection serverConnection = manager.createConnection(serverIP);
     	this.connectionWindow.getBottomLabel().setText("Connected to: " + serverConnection.getAdress() + ". Waiting for an enemy to connect...");
     	this.connectionWindow.getRightButton().setOnAction(null);
-		serverConnection.readObjectAsync((result, sender)->{
-			if (result instanceof String){
-				String data = (String)result;
-				if (data.equals(GlobalVariables.startGameCommand)){
-					Platform.runLater(()->{
-						this.connectionWindow.getBottomLabel().setText("Starting game...");
-						stage.hide();
-						stage.setScene(
-							new Scene(
-								new PlayWindow(serverConnection)
-							)
-						);
-						stage.show();
-					});
-				}
+		serverConnection.readStringAsync((result)->{
+			if (result.equals(GlobalVariables.startGameCommand)){
+				Platform.runLater(()->{
+					this.connectionWindow.getBottomLabel().setText("Starting game...");
+					stage.hide();
+					stage.setScene(
+						new Scene(
+							new PlayWindow(serverConnection)
+						)
+					);
+					stage.show();
+				});
 			}
 		});
 	}

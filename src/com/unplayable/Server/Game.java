@@ -1,15 +1,17 @@
 package com.unplayable.Server;
 
-import com.unplayable.Networking.Connection;
+import com.unplayable.Networking.Connection.Connection;
 import com.unplayable.Static.GlobalVariables;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class Game {
     private Connection[] players;
+
     public Game(Connection player1, Connection player2) throws IOException, InterruptedException {
         this.players = new Connection[] {player1, player2};
         System.out.println("starting game between: ");
@@ -20,13 +22,11 @@ public class Game {
 
         List<Thread> waitingPlayers = new ArrayList<>();
         for (Connection player : this.players){
-            player.sendObject(GlobalVariables.startGameCommand);
+            player.writeString(GlobalVariables.startGameCommand);
             Thread waitingThread = new Thread(()->{
                 try {
-                    player.readObject();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
+                    player.readString();
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             });
@@ -41,5 +41,29 @@ public class Game {
         System.out.println("All players ready!");
         System.out.println("Starting match!");
 
+		player1.readStringAsync((message)->{
+			new Thread(()->{
+				handleMessage(message, player1, player2);
+			}).start();
+		});
+        player2.readStringAsync((message)->{
+        	new Thread(()->{
+				handleMessage(message, player2, player1);
+			}).start();
+		});
+
+		player1.writeString(GlobalVariables.ClickToFireStateCommand);
+		player2.writeString(GlobalVariables.WaitForAttackCommand);
     }
+
+    private void handleMessage(String message, Connection fromPlayer, Connection otherPlayer){
+		fromPlayer.readStringAsync((m)->{
+			new Thread(()->{
+				handleMessage(m, fromPlayer, otherPlayer);
+			}).start();
+		});
+		Thread.yield();
+    	System.out.println("Passing message between " + fromPlayer.getAdress() + " and " + otherPlayer.getAdress());
+    	otherPlayer.writeString(message);
+	}
 }

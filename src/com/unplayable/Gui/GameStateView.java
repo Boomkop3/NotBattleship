@@ -5,7 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
-public class InGameWindow extends BorderPane {
+public class GameStateView extends BorderPane {
     private VBox ownStats;
     private VBox otherStats;
     private Label infoSelf;
@@ -74,7 +74,7 @@ public class InGameWindow extends BorderPane {
         this.otherKillsToGoText = new Label("opponent's kills to go: " + this.otherKillsToGo);
     }
 
-    public InGameWindow() {
+    public GameStateView() {
         this.ownHits = 0;
         this.ownHitsRecieved = 0;
         this.ownKills = 0;

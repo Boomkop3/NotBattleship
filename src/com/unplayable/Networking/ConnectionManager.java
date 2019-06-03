@@ -1,5 +1,7 @@
 package com.unplayable.Networking;
 
+import com.unplayable.Networking.Connection.Connection;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -45,14 +47,6 @@ public class ConnectionManager {
 		return connection;
 	}
 
-	public void receiveObjectAsync(NetworkCallback callback){
-		incomingConnections.stream().parallel().forEach((connection -> {
-			connection.readObjectAsync((result, adress)->{
-				callback.callback(result, adress);
-			});
-		}));
-	}
-
 	private ConnectionManager() throws IOException {
 		this.incomingConnections = new ArrayList<>();
 		this.createdConnections = new ArrayList<>();
@@ -83,6 +77,7 @@ public class ConnectionManager {
 			}
 		}).start();
 	}
+
 
 	public List<Connection> getIncomingConnections(){
 		return this.incomingConnections;

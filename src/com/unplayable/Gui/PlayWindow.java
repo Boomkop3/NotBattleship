@@ -1,41 +1,118 @@
 package com.unplayable.Gui;
 
-import com.unplayable.Networking.Connection;
+import com.unplayable.Gui.SeaWorld.SeaWorld;
+import com.unplayable.Gui.SeaWorld.States.BoatPlacementState;
+import com.unplayable.Gui.SeaWorld.States.ClickToFireState;
+import com.unplayable.Gui.SeaWorld.States.WaitForAttackState;
+import com.unplayable.Gui.SeaWorld.States.WaitingState;
+import com.unplayable.Networking.Connection.Connection;
 import com.unplayable.Static.GlobalVariables;
-import com.unplayable.Static.ResourceReader;
+import javafx.application.Platform;
 import javafx.scene.control.Button;
-import javafx.scene.effect.Effect;
 import javafx.scene.layout.BorderPane;
-import org.jfree.fx.FXGraphics2D;
 
+import java.io.DataInputStream;
 import java.io.IOException;
-import java.util.List;
 
 
 public class PlayWindow extends BorderPane {
     private Connection connection;
+    private SeaWorld seaWorld;
+    private Button readyButton;
 
-    public PlayWindow(Connection connection) {
+	public PlayWindow(Connection connection) {
         this.connection = connection;
-        GetReadyWindow getReadyWindow = new GetReadyWindow();
-        Button readyButton = getReadyWindow.getReady();
-        SeaWorld world = new SeaWorld(null, this);
+        this.readyButton = new Button("Ready");
+		this.setRight(readyButton);
+        this.seaWorld = new SeaWorld((g)->{}, this);
+		this.seaWorld.setState(new BoatPlacementState(this.seaWorld));
+		this.setCenter(this.seaWorld);
 
-        readyButton.setOnAction(event -> {
+        this.readyButton.setOnAction(event -> {
             try {
-                this.connection.sendObject(GlobalVariables.ImReadyCommand);
-                readyButton.setText("Waiting for enemy...");
-                readyButton.setDisable(true);
-            } catch (IOException e) {
+                this.connection.writeString(GlobalVariables.ImReadyCommand);
+				this.readyButton.setText("Waiting for enemy...");
+				this.readyButton.setDisable(true);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-            world.setInGame(true);
-            this.setRight(new InGameWindow());
+            this.seaWorld.setState(
+            	new WaitingState(this.seaWorld)
+			);
         });
-        getReadyWindow.setReady(readyButton);
-        this.setCenter(
-                world
-        );
-        this.setRight(getReadyWindow);
-    }
+		connection.readStringAsync((message)->{
+			new Thread(()->{
+				receiveMessage(message);
+			}).start();
+		});
+	}
+
+	public Connection getConnection() {
+		return connection;
+	}
+
+	public void setConnection(Connection connection) {
+		this.connection = connection;
+	}
+
+	public SeaWorld getSeaWorld() {
+		return seaWorld;
+	}
+
+	public void setSeaWorld(SeaWorld seaWorld) {
+		this.seaWorld = seaWorld;
+	}
+
+	public Button getReadyButton() {
+		return readyButton;
+	}
+
+	public void setReadyButton(Button readyButton) {
+		this.readyButton = readyButton;
+	}
+
+    private void receiveMessage(String message){
+		Thread.yield();
+    	System.out.println("recieved message: " + message);
+		Platform.runLater(()->{
+			this.readyButton.setText(message);
+		});
+		connection.readStringAsync((m)->{
+			new Thread(()->{
+				receiveMessage(m);
+			}).start();
+		});
+    	switch (message) {
+			case GlobalVariables.ClickToFireStateCommand: {
+				this.seaWorld.setState(
+					new ClickToFireState(this.seaWorld)
+				);
+				break;
+			}
+			case GlobalVariables.WaitForAttackCommand: {
+				this.seaWorld.setState(
+					new WaitForAttackState(this.seaWorld)
+				);
+				break;
+			}
+			case GlobalVariables.waitStateCommand: {
+				this.seaWorld.setState(
+					new WaitingState(this.seaWorld)
+				);
+				break;
+			}
+			case GlobalVariables.PlayerWinCommand: {
+				// ToDo: Win
+				break;
+			}
+			case GlobalVariables.PlayerLossCommand: {
+				// ToDo: Lose
+				break;
+			}
+			default: {
+				this.seaWorld.handleInput(message);
+				break;
+			}
+		}
+	}
 }
