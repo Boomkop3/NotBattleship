@@ -21,6 +21,38 @@ public class Score {
         this.otherKillsToGo = otherKillsToGo;
     }
 
+    public void setHits(int hits) {
+        this.hits = hits;
+    }
+
+    public void setHitsRecieved(int hitsRecieved) {
+        this.hitsRecieved = hitsRecieved;
+    }
+
+    public void setKills(int kills) {
+        this.kills = kills;
+    }
+
+    public void setDeaths(int deaths) {
+        this.deaths = deaths;
+    }
+
+    public void setOwnHitsToGo(int ownHitsToGo) {
+        this.ownHitsToGo = ownHitsToGo;
+    }
+
+    public void setOtherHitsToGo(int otherHitsToGo) {
+        this.otherHitsToGo = otherHitsToGo;
+    }
+
+    public void setOwnKillsToGo(int ownKillsToGo) {
+        this.ownKillsToGo = ownKillsToGo;
+    }
+
+    public void setOtherKillsToGo(int otherKillsToGo) {
+        this.otherKillsToGo = otherKillsToGo;
+    }
+
     public int getHits() {
         return hits;
     }

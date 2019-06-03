@@ -56,7 +56,7 @@ public class GameStateView extends BorderPane {
         this.updateInterface();
     }
 
-    private void updateInterface(){
+    public void updateInterface(){
         this.infoSelf = new Label("own stats:");
         this.infoOther = new Label("opponent's stats:");
         this.ownHitsText = new Label("your hits: " + this.ownHits);

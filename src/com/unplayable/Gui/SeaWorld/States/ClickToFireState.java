@@ -41,7 +41,7 @@ public class ClickToFireState extends SeaWorldState {
 			e1.printStackTrace();
 		}
 		this.seaWorld.setState(
-			new WaitForAttackState(this.seaWorld)
+			new GettingHitState(this.seaWorld)
 		);
 	}
 
