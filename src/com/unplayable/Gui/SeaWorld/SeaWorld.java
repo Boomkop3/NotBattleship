@@ -178,7 +178,7 @@ public class SeaWorld extends ResizableCanvas {
 		this.world.update(this.updateRate);
     }
 
-    public void createExplosion(int tileX, int tileY){
+    public boolean createExplosion(int tileX, int tileY){
 		Vector2 location;
     	try {
 			Vector2 GridCoords = getGridCoords(
@@ -190,10 +190,11 @@ public class SeaWorld extends ResizableCanvas {
 			);
 			// Thanks garbage collector!
 		} catch (IllegalArgumentException e){
-    		return;
+    		return false;
 		}
 
 		this.lastExplosionLocation = location;
+    	boolean hit = false;
 
 		for (Body body : this.world.getBodies()){
 			Vector2 bodyLocation = body.getTransform().getTranslation();
@@ -207,6 +208,7 @@ public class SeaWorld extends ResizableCanvas {
 			if (proximity < GlobalVariables.explosionLethalDistance){
 				if (body instanceof ShipPiece){
 					((ShipPiece)body).setIsDestroyed(true);
+					hit = true;
 				}
 			}
 			Vector2 force = new Vector2(
@@ -217,6 +219,7 @@ public class SeaWorld extends ResizableCanvas {
 				force
 			);
 		}
+		return hit;
 	}
 
 	private void drawGrid(FXGraphics2D g){
