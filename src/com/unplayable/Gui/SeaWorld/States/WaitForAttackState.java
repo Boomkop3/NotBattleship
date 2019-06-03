@@ -4,6 +4,8 @@ import com.unplayable.Gui.GameStateView;
 import com.unplayable.Gui.PlayWindow;
 import com.unplayable.Gui.Score;
 import com.unplayable.Gui.SeaWorld.SeaWorld;
+import com.unplayable.Static.GlobalVariables;
+import javafx.application.Platform;
 import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
@@ -11,6 +13,9 @@ import java.io.IOException;
 public class WaitForAttackState extends SeaWorldState {
 	public WaitForAttackState(SeaWorld seaWorld) {
 		super(seaWorld);
+		Platform.runLater(()->{
+			((PlayWindow)this.seaWorld.getParent()).getReadyButton().setText(GlobalVariables.waitForDamageModeText);
+		});
 	}
 
 	@Override
