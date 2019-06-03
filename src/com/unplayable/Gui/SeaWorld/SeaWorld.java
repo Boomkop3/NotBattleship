@@ -9,6 +9,7 @@ import com.unplayable.Static.GlobalVariables;
 import com.unplayable.Ship.Ship;
 import com.unplayable.Static.ResourceReader;
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 import org.dyn4j.dynamics.Body;
@@ -227,7 +228,13 @@ public class SeaWorld extends ResizableCanvas {
 		this.world.update(this.updateRate);
     }
 
-    public boolean createExplosion(int tileX, int tileY){
+    public void createExplosion(int x, int y){
+		Platform.runLater(()->{
+			doExplosion(x, y);
+		});
+	}
+
+    private boolean doExplosion(int tileX, int tileY){
 		Vector2 location;
     	try {
 			Vector2 GridCoords = getGridCoords(
