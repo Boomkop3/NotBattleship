@@ -91,18 +91,21 @@ public class PlayWindow extends BorderPane {
 				receiveMessage(m);
 			}).start();
 		});
-    	Platform.runLater(()->{
-			this.setRight(null);
-		});
 
     	switch (message) {
 			case GlobalVariables.ClickToFireStateCommand: {
+				Platform.runLater(()->{
+					readyButton.setText(GlobalVariables.fireModeText);
+				});
 				this.seaWorld.setState(
 					new ClickToFireState(this.seaWorld)
 				);
 				break;
 			}
 			case GlobalVariables.WaitForAttackCommand: {
+				Platform.runLater(()->{
+					readyButton.setText(GlobalVariables.waitForDamageModeText);
+				});
 				this.seaWorld.setState(
 					new WaitForAttackState(this.seaWorld)
 				);
