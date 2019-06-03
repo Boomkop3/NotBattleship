@@ -18,4 +18,7 @@ public class GlobalVariables {
     public static final String WaitForAttackCommand = "GoGetFknRekt";
     public static final String PlayerWinCommand = "YouGotEmTiger";
     public static final String PlayerLossCommand = "YougotRekM8";
+
+    public static final String fireModeText = "Shoot at someone";
+    public static final String waitForDamageModeText = "Get shot at";
 }
