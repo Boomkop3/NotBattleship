@@ -1,17 +1,11 @@
 package com.unplayable;
 
-import com.unplayable.Gui.ServerWindow;
-import com.unplayable.Networking.Connection;
+import com.unplayable.Networking.Connection.Connection;
 import com.unplayable.Networking.ConnectionManager;
 import com.unplayable.Server.Game;
-import com.unplayable.Static.GlobalVariables;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ServerMain {
@@ -38,12 +32,10 @@ public class ServerMain {
     }
 
     private static void startGame(Connection player1, Connection player2) {
-        try {
-            new Game(player1, player2);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    	try {
+			new Game(player1, player2);
+		} catch (Exception e){
+    		e.printStackTrace();
+		}
     }
 }

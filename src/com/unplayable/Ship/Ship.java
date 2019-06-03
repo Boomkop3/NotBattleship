@@ -33,17 +33,19 @@ public class Ship {
 	}
 
     public void setPosition(Point2D position){
+    	/*
 		position = new Point2D.Double(
 			position.getX() + (GlobalVariables.shipPieceSize/2),
 			position.getY() + (GlobalVariables.shipPieceSize/2)
 		);
+		*/
         for (int i = 0, shipPiecesLength = this.pieces.length; i < shipPiecesLength; i++) {
             ShipPiece piece = this.pieces[i];
             int size = piece.getImage().getHeight();
             piece.setPosition(
                 new Point2D.Double(
-                    (int)position.getX() + (i * rotation.offset.getX() * size),
-                    (int)position.getY() + (i * rotation.offset.getY() * size)
+                    position.getX() + (i * rotation.offset.getX() * size),
+                    position.getY() + (i * rotation.offset.getY() * size)
                 )
             );
             piece.getTransform().setRotation(this.rotation.getTheta());
@@ -51,10 +53,9 @@ public class Ship {
     }
 
 	public Point2D getPosition(){
-		Vector2 position = this.pieces[0].getTransform().getTranslation();
 		return new Point2D.Double(
-			position.x - (GlobalVariables.shipPieceSize/2),
-			position.y - (GlobalVariables.shipPieceSize/2)
+			this.pieces[0].getPosition().x,
+			this.pieces[0].getPosition().y
 		);
 	}
 
@@ -77,16 +78,18 @@ public class Ship {
 		}
     }
 
-	public int getCenterPieceIndex(){
-    	return this.pieces.length/2;
-	}
-
-    public ShipPiece getCenterPiece(){
-    	return this.pieces[this.getCenterPieceIndex()];
+    public boolean isDead(){
+    	boolean isDead = true;
+    	for (ShipPiece piece : this.pieces){
+			if (!piece.isDestroyed()){
+				isDead = false;
+			}
+		}
+    	return isDead;
 	}
 
     public void draw(FXGraphics2D g){
-    	int centerIndex = this.getCenterPieceIndex();
+    	//int centerIndex = this.getCenterPieceIndex();
     	int size = GlobalVariables.shipPieceSize;
     	//ShipPiece centerPiece = this.getCenterPiece();
 		ShipPiece firstPiece = this.pieces[0];
