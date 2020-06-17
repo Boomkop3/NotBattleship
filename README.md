@@ -1,3 +1,5 @@
+Turns out the physics engine is kinda broken :/
+
 # NotBattleship
 
 Battleship, the old game. Have you ever played it?
